@@ -38,6 +38,7 @@
     <Folder Include="wwwroot\admin\libs\neditor\net\upload\image\" />
     <Folder Include="wwwroot\content\createFile\Logic\" />
     <Folder Include="wwwroot\content\createFile\Model\" />
+    <Folder Include="wwwroot\content\upFile\" />
   </ItemGroup>
 
 </Project>

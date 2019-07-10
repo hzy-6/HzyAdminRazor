@@ -182,9 +182,9 @@ namespace HzyAdmin.Areas.Admin.Controllers
                 throw new MessageBox("请上传后缀名为：" + string.Join("、", Format) + " 格式的文件");
             }
 
-            if (!Directory.Exists(_WebRootPath + "\\Content\\UpFile\\"))
-                Directory.CreateDirectory(_WebRootPath + "\\Content\\UpFile\\");
-            string filePath = "/Content/UpFile/" + Guid.NewGuid() + ExtensionName;
+            if (!Directory.Exists(_WebRootPath + "\\content\\upFile\\"))
+                Directory.CreateDirectory(_WebRootPath + "\\content\\upFile\\");
+            string filePath = "/content/upFile/" + Guid.NewGuid() + ExtensionName;
             // 创建新文件
             using (FileStream fs = System.IO.File.Create(_WebRootPath + filePath))
             {
