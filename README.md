@@ -17,11 +17,10 @@
 数据库脚本位置：wwwroot/AppDb/appdb.sql
 
 
-#### 安装教程
-
-1. xxxx
-2. xxxx
-3. xxxx
+#### 部分界面截图
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0711/004720_5c95a75f_1242080.jpeg "1.jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0711/004923_93af069c_1242080.jpeg "1562777317(1).jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2019/0711/005112_29863a12_1242080.jpeg "1562777452(1).jpg")
 
 #### 使用说明
 
