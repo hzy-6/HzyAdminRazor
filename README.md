@@ -4,7 +4,17 @@
 基于.Net Core 2.2 开发的 通用后台管理系统！通配权限。
 
 #### 软件架构
-软件架构说明
+开发环境：vs2017、asp.net mvc 5.2
+
+交流群: 534584927
+
+前端：BootStrap 4 Layer Jquery
+
+后端：NetCore 2.2.301
+
+文档、演示：http://hzyadmin.milaizhijie.com
+
+数据库脚本位置：wwwroot/AppDb/appdb.sql
 
 
 #### 安装教程
