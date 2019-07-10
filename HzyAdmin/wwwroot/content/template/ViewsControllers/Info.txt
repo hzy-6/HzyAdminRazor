@@ -1,0 +1,91 @@
+﻿<div class="container-fluid h-100 bg-white page p-20" id="app">
+
+    <div class="row">
+        <!--表单控件-->
+        @(UI.Input<Sys_Role>(w => w.Role_Num, 12))
+        @(UI.Input<Sys_Role>(w => w.Role_Name, 12))
+        @{
+            var _Select_Role_IsDelete = UI.Select<Sys_Role>(w => w.Role_IsDelete, () =>
+            {
+                var _Options = string.Empty;
+                _Options += $"<option value='1'>是</option>";
+                _Options += $"<option value='2'>否</option>";
+                return _Options;
+            }, 12);
+        }
+        @_Select_Role_IsDelete
+        @(UI.Textarea<Sys_Role>(w => w.Role_Remark, 12))
+
+    </div>
+
+    <!--按钮组start-->
+    <div class="formToolbar">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 text-right">
+                <button class="btn btn-primary" @@click="formKey=''" v-show="formKey">添加</button>
+                <button class="btn btn-success" @@click="save">保存</button>
+                <button class="btn btn-danger" @@click="adminFormObject.closeWindow()">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!--按钮组end-->
+</div>
+
+@section Styles{
+    <!--STYLE-->
+    <style type="text/css">
+    </style>
+}
+@section Scripts{
+    <!--SCRIPT-->
+    <script src="~/admin/js/adminForm.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            formKey:'@ViewBag.FormKey',//表单主键
+            adminFormObject: {},
+            @(UI.CreateViewModel(new <#TableName#>()))
+        },
+        watch: {
+            formKey: function (newV, oldV) {
+                this.load();
+            }
+        },
+        mounted: function () {//页面加载完成
+            this.adminFormObject = new adminForm(this,["adminFormObject"]);
+            this.load();
+        },
+        //函数集合
+        methods: {
+            load: function () {
+                var loadUrl = "@Url.Action("LoadForm")";
+                //初始化页面数据
+                this.adminFormObject.init({
+                    formKey: this.formKey,
+                    url: loadUrl,
+                    callBack: function (r) { console.log(r); }
+                });
+            },
+            //保存
+            save: function () {
+                var loadUrl = "@Url.Action("Save")";
+                console.log(1);
+                //
+                this.adminFormObject.save({
+                    url: loadUrl,
+                });
+            },
+            //查找带回
+            findBack: function (row, tag) {
+					//if (row != null && row.length > 0) row = row[0];
+                    //if (tag == "Role") {
+                    //    this.Role_ID = (row ? row._ukid : "");
+                    //    this.Role_Name = (row ? row.Role_Name : "");
+                    //}
+            },
+        }
+    });
+    </script>
+}

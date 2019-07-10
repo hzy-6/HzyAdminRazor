@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.BodyClass = "page-aside-fixed page-aside-left site-contabs-open site-menubar-unfold ";
+}
+<div class="container-fluid h-100 bg-bgcolor page page-tables" id="app">
+    <div class="page-aside">
+
+        <div class="page-aside-switch">
+            <i class="icon wb-chevron-left" aria-hidden="true"></i>
+            <i class="icon wb-chevron-right" aria-hidden="true"></i>
+        </div>
+
+        <div class="page-aside-inner page-aside-scroll" data-plugin="mCustomScrollbar">
+            <div data-role="container">
+                <div data-role="content">
+                    <section class="page-aside-section">
+                        <div class="list-group">
+                            <a class="list-group-item" href="javascript:;" @@click="pId = null; refresh();">
+                                <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;所有一级
+                            </a>
+                        </div>
+                    </section>
+                    <section class="page-aside-section">
+                        <!--标签树-->
+                        <ul id="tree" class="ztree"></ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-main">
+        <div class="page-content">
+
+            <div class="row">
+                <!--高级检索部分-->
+                <div class="col-sm-12" id="panelSearch">
+                    <div class="card mt-10 mb-10">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5 class="card-title">数据检索</h5>
+                                </div>
+                                <div class="col-sm-12">
+                                    <!--更多高级检索-->
+                                    <form action="javascript:void(0)">
+                                        <div action="javascript:void(0)" class="form-row">
+                                            <div class="col-sm-3">
+                                                <h4 class="example-title">菜单名</h4>
+                                                <input type="text" class="form-control" name="Menu_Name" placeholder="请输入 菜单名">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-12 text-right">
+                                    <button class="btn btn-primary" @@click="refresh()">检索</button>&nbsp;&nbsp;
+                                    <button class="btn btn-success" @@click="adminListObject.resetSearch();refresh()">重置</button>&nbsp;&nbsp;
+                                    <button class="btn btn-danger" @@click="adminListObject.panelSearch()">收起</button>&nbsp;&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--表格-->
+                <div class="col-sm-12">
+                    <div class="card mt-10 mb-10">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-sm-12" id="toolsButtons">
+                                    <div class="btn-group" role="group" data-power="Search" name="search">
+                                        <button type="button" class="btn btn-primary" @@click="adminListObject.panelSearch()"><i class="fas fa-search"></i>&nbsp;检索(收/展)</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary" data-power="Add" name="add" @@click="form('add')">添加</button>
+                                        <button type="button" class="btn btn-primary" data-power="Edit" name="edit" @@click="form('update')" style="display:none;">修改</button>
+                                        <button type="button" class="btn btn-primary" data-power="Delete" name="delete" @@click="remove" style="display:none;">删除</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <a class="btn btn-primary" data-power="GetExcel" name="getExcel" @@click="exportExcel" target="_blank">导出Excel</a>
+                                        <a class="btn btn-primary" data-power="Print" name="print" @@click="print" target="_blank">打印</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12"><table id="adminTable"></table></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+</div>
+
+@section Styles{
+    <!--STYLE-->
+    <link href="~/admin/libs/bootstrap-table-master/dist/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="~/Admin/libs/zTree/css/metroStyle/metroStyle.css" rel="stylesheet" />
+    <style type="text/css">
+    </style>
+}
+@section Scripts{
+    <!--SCRIPT-->
+    <script src="~/admin/libs/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+    <script src="~/admin/libs/bootstrap-table-master/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/admin/js/adminList.js"></script>
+    <!--else-->
+    <script src="~/admin/libs/zTree/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            adminListObject: {},
+            pId:null
+        },
+        mounted: function () {//页面加载完成
+            this.adminListObject = new adminList();
+            this.load();
+            this.getMenuAndFunctionTree();
+        },
+        //函数集合
+        methods: {
+            load: function () {
+                var loadUrl = "@Url.Action("GetDataSource")";
+                admin.ajax({
+                    url: loadUrl,
+                    data: { rows: 1 },
+                    success: function (r) {
+                        var _columns = r.column;
+                        //表格加载
+                        app.adminListObject.tableInit({
+                            url: loadUrl,
+                            columns: _columns
+                        });
+                    }
+                });
+            },
+            //打开表单
+            form: function (tag) {
+                var rows = this.adminListObject.selectRows();
+                var loadUrl = "@Url.Action("Info")";
+
+                if (tag == "add") {
+                    loadUrl = loadUrl + "?formKey=";
+                } else {
+                    loadUrl = loadUrl + "?formKey=" + rows[0]._ukid;
+                }
+
+                this.adminListObject.form({
+                    parentFrameName: window.location.pathname,
+                    url: loadUrl,
+                    width: "800px",
+                    height: "600px",
+                    btn: false,
+                    end: function () {
+                        app.refresh();
+                        console.log('我被销毁了!');
+                    }
+                });
+            },
+            //删除数据
+            remove: function () {
+                var loadUrl = '@Url.Action("Delete")';
+                app.adminListObject.delete(loadUrl, function () {
+                    app.refresh();
+                    console.log("删除完成!");
+                    app.getMenuAndFunctionTree();
+                });
+            },
+            //刷新列表数据
+            refresh: function (data) {
+                app.adminListObject.refresh({
+                    Menu_ID:app.pId
+                });
+            },
+            //导出excel
+            exportExcel: function () {
+                app.adminListObject.exportExcel('@Url.Action("ExportExcel")');
+            },
+            //打印
+            print: function () {
+                app.adminListObject.print('@Url.Action("Print")');
+            },
+            getMenuAndFunctionTree: function () {
+                admin.ajax({
+                    url: "@Url.Action("GetMenuAndFunctionTree")",
+                    success: function (r) {
+                        var setting = {
+                            check: {
+                                enable: true,
+                                chkboxType: { "Y": "ps", "N": "ps" },
+                                chkDisabled: true
+                            },
+                            view: {
+                                dblClickExpand: true
+                            },
+                            data: {
+                                simpleData: {
+                                    enable: true,
+                                    idKey: "id",
+                                    pIdKey: "pId",
+                                    rootPId: 0,
+                                },
+                                key: { checked: 'checked' }
+                            },
+                            callback: {
+                                onClick: function (event, treeId, treeNode) {
+                                    app.pId = treeNode.id;
+                                    app.refresh();
+                                },
+                            }
+                        };
+                        zTree = $.fn.zTree.init($("#tree"), setting, r.value);
+                        //zTree.expandAll(true);//展开所有
+                    }
+                });
+            }
+
+
+
+
+
+        }
+    });
+    </script>
+}

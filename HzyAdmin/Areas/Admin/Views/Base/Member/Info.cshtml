@@ -1,0 +1,167 @@
+﻿@{
+    //这里 只是  一个 示例  这里 可以从 数据库中 读取 数据 然后 加载到页面中
+    var sexList = new List<string>();
+
+    sexList.Add("男");
+    sexList.Add("女");
+}
+<div class="container-fluid adminForm" id="app">
+
+    <div class="row">
+        <!--表单控件-->
+        <!--检索面板-->
+        @(UI.Input<Member>(item => item.Member_Num, 4, new { @readonly = "readonly", type = "number" }))
+
+        @(UI.Input<Member>(item => item.Member_Name, 4))
+
+        @(UI.Input<Member>(item => item.Member_Phone, 4, new { type = "number" }))
+
+        @{
+            var _Select_Member_Sex = UI.Select<Member>(item => item.Member_Sex, () =>
+            {
+                var Html = "";
+
+                foreach (var item in sexList)
+                {
+                    Html += "<option value=\"" + item + "\">" + item + "</option>";
+                }
+
+                return Html;
+            }, 4);
+        }
+        @_Select_Member_Sex
+
+        @(UI.Input<Member>(item => item.Member_Birthday, 4))
+
+        @(UI.FindBack<Sys_User, Member>(w => w.User_Name, w => w.Member_UserID, Url.Action("Index", "User", new { findback = 1 }), "app.findBack(row,'User')", "app.findBack(null,'User');", 4))
+
+        <div class="col-sm-6">
+            <h4 class="example-title">@(UI.GetField<Member>(w => w.Member_Photo).Item2)</h4>
+            <input type="file" class="form-control" name="Member_Photo" />
+            <a v-bind:href="Member_Photo" v-show="Member_Photo" target="_blank">{{Member_Photo}}</a>
+        </div>
+
+        <div class="col-sm-6">
+            <h4 class="example-title">@(UI.GetField<Member>(w => w.Member_FilePath).Item2)</h4>
+            <input type="file" class="form-control" name="Member_FilePath" multiple="multiple" />
+            <div v-for="item in Member_FilePath.split(',')">
+                <a v-bind:href="item" v-show="item" target="_blank">{{item}}</a>
+            </div>
+        </div>
+
+        @(UI.UEditor<Member>(item => item.Member_Introduce, 12))
+
+    </div>
+
+    <!--按钮组start-->
+    <div class="formToolbar">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 text-right">
+                <button class="btn btn-primary" @@click="formKey=''" v-show="formKey">添加</button>
+                <button class="btn btn-success" @@click="save">保存</button>
+                <button class="btn btn-danger" @@click="adminFormObject.closeWindow()">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!--按钮组end-->
+</div>
+
+@section Styles{
+    <!--STYLE-->
+    <style type="text/css">
+    </style>
+
+}
+@section Scripts{
+    <!-- 配置文件 -->
+    <script src="~/admin/libs/neditor/neditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script src="~/admin/libs/neditor/neditor.all.min.js"></script>
+    <script src="~/admin/libs/neditor/i18n/zh-cn/zh-cn.js"></script>
+    <!--SCRIPT-->
+    <script src="~/admin/js/adminForm.js"></script>
+    <script src="~/admin/libs/laydate/laydate.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            formKey:'@ViewBag.FormKey',//表单主键
+            adminFormObject: {},
+            @(UI.CreateViewModel(new Member(),new Sys_User()))
+        },
+        watch: {
+            formKey: function (newV, oldV) {
+                this.load();
+            }
+        },
+        mounted: function () {//页面加载完成
+            this.adminFormObject = new adminForm(this,["adminFormObject"]);
+            this.load();
+        },
+        //函数集合
+        methods: {
+            load: function () {
+                //编辑器 配置
+                var editor_Member_Introduce = UE.getEditor('Member_Introduce');
+                editor_Member_Introduce.addListener('blur', function (editor) {
+                    app.Member_Introduce = editor_Member_Introduce.getContent();
+                });
+
+                var loadUrl = "@Url.Action("LoadForm")";
+                //初始化页面数据
+                this.adminFormObject.init({
+                    formKey: this.formKey,
+                    url: loadUrl,
+                    callBack: function (r) {
+                        setTimeout(function () {
+                            editor_Member_Introduce.setContent(app.Member_Introduce ? app.Member_Introduce.replace(/'/g, '\'') : "");
+                        }, 300);
+                    }
+                });
+
+                //时间 配置 代码
+                laydate.render({
+                    elem: document.querySelector("input[name=Member_Birthday]"),
+                    type: 'date',
+                    done: function (value, date, endDate) {
+                        app.Member_Birthday = value;
+                    }
+                });
+            },
+            //保存
+            save: function () {
+                var loadUrl = "@Url.Action("Save")";
+                var newData = this.adminFormObject.createFormData();
+                //头像
+                var _Member_Photo_Files = document.querySelector('input[name=Member_Photo]').files;
+                if (_Member_Photo_Files.length > 0) {
+                    newData.append("Member_Photo_Files", _Member_Photo_Files[0]);
+                }
+                //多文件
+                var _Member_FilePath_Fiels = document.querySelector('input[name=Member_FilePath]').files;
+                if (_Member_FilePath_Fiels.length > 0) {
+                    for (var i = 0; i < _Member_FilePath_Fiels.length; i++) {
+                        var item = _Member_FilePath_Fiels[i];
+                        newData.append("Member_FilePath_Files_" + i, item);
+                    }
+                }
+                //提交数据
+                this.adminFormObject.save({
+                    url: loadUrl,
+                    data: newData,
+                    isupfile: true
+                });
+            },
+            //查找带回
+            findBack: function (row, tag) {
+                if (row != null && row.length > 0) row = row[0];
+                if (tag == "User") {
+                    this.Member_UserID = (row ? row._ukid : "");
+                    this.User_Name = (row ? row.User_Name : "");
+                }
+            },
+        }
+    });
+    </script>
+}

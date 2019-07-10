@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "HzyAdmin .NetCore";
+}
+@section Styles{
+    <style type="text/css">
+        #hzy-login {
+            background: url(/admin/hzyAdminUI/images/login4.jpg);
+        }
+    </style>
+}
+@section Scripts{
+
+}
+<div id="hzy-login">
+    <div class="login-modal">
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="login-panel">
+                <h1 class="text-center" style="font-size: 25px;">@Html.Raw(ViewBag.Title)</h1>
+
+                <div class="container-fluid">
+
+                    <div class="pt-20">
+
+                        <div class="form-group mt-30">
+                            <label for="uName">帐户名</label>
+                            <input type="text" class="form-control" placeholder="请输入帐户名" v-model="UserName">
+                        </div>
+
+                        <div class="form-group mt-30">
+                            <label for="uName">密码</label>
+                            <input type="password" class="form-control" placeholder="请输入密码" v-model="UserPassword">
+                        </div>
+
+                        @*<div class="form-group form-material">
+                                <label class="col-form-label" for="inputAddons">验证码</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="请输入验证码" v-model="LoginCode">
+                                    <div class="input-group-append">
+                                        <img class="yzm" alt="看不清？点击更换" src="/Admin/Login/GetYZM" onclick="this.src='/Admin/Login/GetYZM?s='+new Date().getTime();" width="100" style="height: 31px; border-bottom: 1px solid #e4eaec;">
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        <a class="btn btn-block btn-primary btn-lg mt-50" href="javascript:;" @@click="check">登录</a>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    /*
+     *  页面逻辑
+     */
+    var appLogin = new Vue({
+        el: '#hzy-login',
+        data: {
+            UserName: "admin",
+            UserPassword: "123456",
+            LoginCode: null
+        },
+        //页面加载完成
+        mounted: function () {
+            this.$nextTick(function () {
+                $(document).keydown(function (e) {
+                    if (e.which == 13) {
+                        appLogin.check();
+                    }
+                });
+            });
+        },
+        //函数集合
+        methods: {
+            check: function () {
+                if (!this.UserName) return admin.msg("请输入用户名", "警告");
+                if (!this.UserPassword) return admin.msg("请输入密码", "警告");
+                //if (!this.LoginCode) return admin.msg("请输入验证码", "警告");
+                admin.ajax({
+                    url: '@Url.Action("Check")',
+                    data: this.$data,
+                    loading:true,
+                    success: function (r) {
+                        if (r.status == 1) {
+                           top.window.location = r.jumpurl;
+                        }                        
+                    }
+                });
+            }
+
+        }
+
+    });
+</script>

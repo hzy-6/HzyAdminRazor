@@ -1,0 +1,137 @@
+﻿@{
+    var pId = Tools.HttpHelper.Request.Query["pId"];
+}
+<div class="container-fluid adminForm" id="app">
+
+    <div class="row">
+        <!--表单控件-->
+        @(UI.Input<Sys_Menu>(item => item.Menu_Num, 6, new { placeholder = "A 或者 A-100" }))
+        @(UI.Input<Sys_Menu>(item => item.Menu_Name))
+        @(UI.Input<Sys_Menu>(item => item.Menu_Url, 6, new { placeholder = "请输入菜单Href 如：/Admin/User/Index" }))
+        @(UI.Input<Sys_Menu>(item => item.Menu_Icon, 6, new { placeholder = "请输入菜单图标 如：fa fa-file" }))
+        <div class="col-sm-6">
+            <h4 class="example-title">父级菜单</h4>
+            <input class="form-control" type="text" v-model="pname" disabled="disabled">
+        </div>
+        @{
+            var _Select_Menu_IsShow = UI.Select<Sys_Menu>(item => item.Menu_IsShow, () =>
+            {
+                var _Html = "";
+                _Html += "<option value=\"1\">是</option>";
+                _Html += "<option value=\"2\">否</option>";
+                return _Html;
+            });
+        }
+        @_Select_Menu_IsShow
+
+        <div class="col-sm-12">
+            <h4 class="example-title">菜单功能</h4>
+            <div class="row">
+                <div class="col-sm-3 admin-checkbox" v-for="item,index in Sys_FunctionList">
+                    <input type="checkbox" v-bind:name="index" v-bind:id="index" v-model="item.State">
+                    <label  v-bind:for="index"></label>{{item.Function_Name}}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--按钮组start-->
+    <div class="formToolbar">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 text-right">
+                <button class="btn btn-primary" @@click="formKey=''" v-show="formKey">添加</button>
+                <button class="btn btn-success" @@click="save">保存</button>
+                <button class="btn btn-danger" @@click="adminFormObject.closeWindow()">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!--按钮组end-->
+</div>
+
+@section Styles{
+    <!--STYLE-->
+    <style type="text/css">
+    </style>
+}
+@section Scripts{
+    <!--SCRIPT-->
+    <script src="~/admin/js/adminForm.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            formKey:'@ViewBag.FormKey',//表单主键
+            adminFormObject: {},
+            @(UI.CreateViewModel(new Sys_Menu(),"pname","Sys_FunctionList"))
+            Sys_MenuFunctionList: [],
+            pId:'@pId'
+        },
+        watch: {
+            formKey: function (newV, oldV) {
+                this.load();
+            }
+        },
+        mounted: function () {//页面加载完成
+            this.adminFormObject = new adminForm(this,["adminFormObject",'Sys_FunctionList']);
+            this.load();
+        },
+        //函数集合
+        methods: {
+            load: function () {
+                var loadUrl = "@Url.Action("LoadForm")";
+                //初始化页面数据
+                this.adminFormObject.init({
+                    formKey: this.formKey,
+                    url: loadUrl,
+                    callBack: function (r) {
+                        if (app.pId) {
+                            admin.ajax({
+                                url: "@Url.Action("LoadForm")",
+                                data: { ID: app.pId },
+                                success: function (r) {
+                                    if (!app.formKey) {
+                                        app.pname = r.Menu_Name;
+                                        app.Menu_ParentID = app.pId;
+                                    }
+                                }
+                            });
+                        } else {
+                            app.pname = "一级菜单";
+                        }
+
+                        if (!app.formKey) {
+                            app.Menu_IsShow = 1;
+                        }
+
+                    }
+                });
+            },
+            //保存
+            save: function () {
+                var loadUrl = "@Url.Action("Save")";
+
+                for (var i = 0; i < this.Sys_FunctionList.length; i++) {
+                    var item = this.Sys_FunctionList[i];
+                    if (item.State) {
+                        this.Sys_MenuFunctionList.push({
+                            MenuFunction_FunctionID: item.Function_ID
+                        });
+                    }
+                }
+                
+                //
+                this.adminFormObject.save({
+                    url: loadUrl,
+                });
+            },
+            //查找带回
+            findBack: function (row, tag) {
+
+            },
+        }
+    });
+    </script>
+}

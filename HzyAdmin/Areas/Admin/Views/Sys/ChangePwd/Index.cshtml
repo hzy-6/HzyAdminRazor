@@ -1,0 +1,94 @@
+﻿<div class="container-fluid h-100 bg-bgcolor page page-tables" id="app">
+    <div class="row">
+        <!--高级检索部分-->
+        <div class="col-sm-6 offset-3">
+            <div class="card mt-10 mb-10">
+                <div class="card-header">
+                    <h4>修改密码</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-sm-8 offset-sm-2 mt-20">
+                            <h4 class="example-title"></h4>
+                            <input type="text" class="form-control" disabled="disabled" value="@ViewBag.UserName" />
+                        </div>
+                        <div class="col-sm-8 offset-sm-2 mt-20">
+                            <h4 class="example-title"></h4>
+                            <input type="password" class="form-control" v-model="oldpwd" placeholder="请输入旧密码" />
+                        </div>
+                        <div class="col-sm-8 offset-sm-2 mt-20">
+                            <h4 class="example-title"></h4>
+                            <input type="password" class="form-control" v-model="newpwd" placeholder="请输入新密码" />
+                        </div>
+                        <div class="col-sm-8 offset-sm-2 mt-20  mb-20">
+                            <h4 class="example-title"></h4>
+                            <input type="password" class="form-control" v-model="newlypwd" placeholder="请再次确认新密码" />
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-primary" @@click="save">确定</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Styles{
+    <!--STYLE-->
+    <style type="text/css">
+    </style>
+}
+@section Scripts{
+    <!--SCRIPT-->
+    <script type="text/javascript">
+        var app = new Vue({
+            el: "#app",
+            data: {
+                oldpwd: null,
+                newpwd: null,
+                newlypwd: null
+            },
+            mounted: function () {//页面加载完成
+
+            },
+            //函数集合
+            methods: {
+                //保存
+                save: function () {
+                    var loadUrl = '@Url.Action("ChangePwd")';
+                    if (!this.oldpwd) {
+                        return admin.msg("请输入旧密码!", "警告");
+                    }
+                    if (!this.newpwd) {
+                        return admin.msg("请输入新密码!", "警告");
+                    }
+                    if (!this.newlypwd) {
+                        return admin.msg("请输入确认密码!", "警告");
+                    }
+                    if (this.newpwd != this.newlypwd) {
+                        return admin.msg("两次密码不一致!", "警告");
+                    }
+                    admin.ajax({
+                        url: loadUrl,
+                        data: {
+                            oldpwd: this.oldpwd,
+                            newpwd: this.newpwd,
+                            newlypwd: this.newlypwd
+                        },
+                        success: function (r) {
+                            if (r.status == 1) {
+                                return admin.msg("操作成功!");
+                            }
+                        }
+                    });
+                },
+            }
+        });
+    </script>
+}

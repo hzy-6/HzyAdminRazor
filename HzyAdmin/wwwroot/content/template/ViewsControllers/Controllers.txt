@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
+namespace //请在此设置您得命名空间
+{
+    using System.Collections;
+    using Entitys;
+    using Entitys.SysClass;
+    using Logic;
+    using Logic.SysClass;
+    using Toolkit;
+
+    /// <summary>
+    /// <#ClassName#>管理
+    /// </summary>
+    public class <#ClassName#> : AdminBaseController
+    {
+
+        public <#ClassName#>()
+        {
+            this.MenuKey = "请输入您的菜单编号";
+        }
+
+        <#TableName#>Logic _Logic = new <#TableName#>Logic();
+
+        #region 页面视图
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Info()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region 获取列表数据源
+
+        public override PagingEntity GetPagingEntity(Hashtable query, int page = 1, int rows = 20)
+        {
+            //获取列表
+            return _Logic.GetDataSource(query, page, rows);
+        }
+
+        #endregion
+
+        #region 保存、删除
+
+        [HttpPost, Aop.AopCheckEntityFilter]
+        public IActionResult Save(<#TableName#> model)
+        {
+            this.FormKey = _Logic.Save(model);
+            return this.Success(new { status = 1, formKey = this.FormKey });
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string Ids)
+        {
+            _Logic.Delete(Ids);
+            return this.Success();
+        }
+
+        #endregion
+
+        #region 加载表单数据
+
+        [HttpPost]
+        public IActionResult LoadForm(string ID)
+        {
+            return this.Success(_Logic.LoadForm(ID.ToGuid()));
+        }
+
+        #endregion
+
+
+    }
+}

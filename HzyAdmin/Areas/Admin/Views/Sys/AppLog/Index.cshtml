@@ -1,0 +1,147 @@
+﻿<div class="container-fluid h-100 bg-bgcolor page page-tables" id="app">
+    <div class="row">
+        <!--高级检索部分-->
+        <div class="col-sm-12" id="panelSearch">
+            <div class="card mt-10 mb-10">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="card-title">数据检索</h5>
+                        </div>
+                        <div class="col-sm-12">
+                            <!--更多高级检索-->
+                            <form action="javascript:void(0)">
+                                <div action="javascript:void(0)" class="form-row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Api</label>
+                                            <input type="text" class="form-control" name="@(nameof(Sys_AppLog.AppLog_Api))" placeholder="请输入 Api">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-12 text-right">
+                            <button class="btn btn-primary" @@click="refresh()">检索</button>&nbsp;&nbsp;
+                            <button class="btn btn-success" @@click="adminListObject.resetSearch()">重置</button>&nbsp;&nbsp;
+                            <button class="btn btn-danger" @@click="adminListObject.panelSearch()">收起</button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--表格-->
+        <div class="col-sm-12">
+            <div class="card mt-10 mb-10">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-sm-12" id="toolsButtons">
+                            <div class="btn-group" role="group" data-power="Search" name="search">
+                                <button type="button" class="btn btn-primary" @@click="adminListObject.panelSearch()"><i class="fas fa-search"></i>&nbsp;检索(收/展)</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                @*<button type="button" class="btn btn-primary" data-power="Add" name="add" @@click="form('add')">添加</button>*@
+                                <button type="button" class="btn btn-primary" data-power="Edit" name="edit" @@click="form('update')" style="display:none;">查看</button>
+                                @*<button type="button" class="btn btn-primary" data-power="Delete" name="delete" @@click="remove" style="display:none;">删除</button>*@
+                            </div>
+                            <div class="btn-group" role="group">
+                                <a class="btn btn-primary" data-power="GetExcel" name="getExcel" @@click="exportExcel" target="_blank">导出Excel</a>
+                                <a class="btn btn-primary" data-power="Print" name="print" @@click="print" target="_blank">打印</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-12"><table id="adminTable"></table></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Styles{
+    <!--STYLE-->
+    <link href="~/admin/libs/bootstrap-table-master/dist/bootstrap-table.min.css" rel="stylesheet" />
+    <style type="text/css">
+    </style>
+}
+@section Scripts{
+    <!--SCRIPT-->
+    <script src="~/admin/libs/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+    <script src="~/admin/libs/bootstrap-table-master/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/admin/js/adminList.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            adminListObject: {},
+        },
+        mounted: function () {//页面加载完成
+            this.adminListObject = new adminList();
+            this.load();
+        },
+        //函数集合
+        methods: {
+            load: function () {
+                var loadUrl = "@Url.Action("GetDataSource")";
+                admin.ajax({
+                    url: loadUrl,
+                    data: { rows: 1 },
+                    success: function (r) {
+                        var _columns = r.column;
+                        //表格加载
+                        app.adminListObject.tableInit({
+                            url: loadUrl,
+                            columns: _columns
+                        });
+                    }
+                });
+            },
+            //打开表单
+            form: function (tag) {
+                var rows = this.adminListObject.selectRows();
+                var loadUrl = "@Url.Action("Info")";
+
+                if (tag == "add") {
+                    loadUrl = loadUrl + "?formKey=";
+                } else {
+                    loadUrl = loadUrl + "?formKey=" + rows[0]._ukid;
+                }
+
+                this.adminListObject.form({
+                    parentFrameName: window.location.pathname,
+                    url: loadUrl,
+                    width: "600px",
+                    height: "600px",
+                    btn: false,
+                    end: function () {
+                        app.refresh();
+                        console.log('我被销毁了!');
+                    }
+                });
+            },
+            //删除数据
+            remove: function () {
+                var loadUrl = '@Url.Action("Delete")';
+                app.adminListObject.delete(loadUrl, function () {
+                    app.refresh();
+                    console.log("删除完成!");
+                });
+            },
+            //刷新列表数据
+            refresh: function (data) {
+                app.adminListObject.refresh(data);
+            },
+            //导出excel
+            exportExcel: function () {
+                app.adminListObject.exportExcel('@Url.Action("ExportExcel")');
+            },
+            //打印
+            print: function () {
+                app.adminListObject.print('@Url.Action("Print")');
+            },
+        }
+    });
+    </script>
+}

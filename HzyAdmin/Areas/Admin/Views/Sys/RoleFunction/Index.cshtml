@@ -1,0 +1,212 @@
+﻿<div class="container-fluid h-100 bg-bgcolor page page-tables" id="app">
+    <div class="row">
+
+        <div class="col-sm-10 offset-sm-1 row">
+            <div class="col-sm-6">
+                <div class="card mt-10 mb-10" style="height:calc(100vh - 40px)">
+                    <div class="card-header">
+                        <div class="row">
+                            <h4 class="col-sm-6">请选择角色</h4>
+                        </div>
+                    </div>
+                    <div class="card-body p-0" style="height:calc(100vh - 160px); overflow:hidden; overflow-y:auto;">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>编号</th>
+                                            <th>角色</th>
+                                            <th>备注</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item,index in Sys_RoleList" @@click="checkChange(index)" v-bind:class="{ adminActive: item.State }">
+                                            <td>{{item.Role_Num}}</td>
+                                            <td>{{item.Role_Name}}</td>
+                                            <td>{{item.Role_Remark}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card mt-10 mb-10" style="height:calc(100vh - 40px)">
+                    <div class="card-header">
+                        <div class="row">
+                            <h4 class="col-sm-6">请勾选权限</h4>
+                            <div class="col-sm-6 text-right">
+                                <button class="btn btn-primary mt-5" v-on:click="save">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0" style="height:calc(100vh - 160px); overflow:hidden; overflow-y:auto;">
+                        <div class="row">
+                            <div class="col-sm-12" id="toolsButtons">
+                                <!--标签树-->
+                                <ul id="tree" class="ztree"></ul>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+</div>
+
+@section Styles{
+    <link href="~/Admin/libs/zTree/css/metroStyle/metroStyle.css" rel="stylesheet" />
+    <!--STYLE-->
+    <style type="text/css">
+        .adminActive {
+            color: #fff;
+            background: #1890ff;
+        }
+    </style>
+}
+@section Scripts{
+    <!--else-->
+    <script src="~/admin/libs/zTree/js/jquery.ztree.all.min.js"></script>
+    <!--SCRIPT-->
+    <script type="text/javascript">
+        var app = new Vue({
+            el: "#app",
+            data: {
+                Sys_RoleList: [],
+                roleid: null,
+            },
+            mounted: function () {//页面加载完成
+                this.load();
+            },
+            //函数集合
+            methods: {
+                load: function () {
+                    var loadUrl = "@Url.Action("LoadForm")";
+                    admin.ajax({
+                        url: loadUrl,
+                        success: function (r) {
+                            if (r.status == 1) {
+                                app.Sys_RoleList = r.Sys_RoleList;
+                                app.roleid = app.getSelectedValue();
+                                app.getRoleMenuFunctionTree();
+                            }
+                        }
+                    });
+                },
+                save: function () {
+                    var treeObj = $.fn.zTree.getZTreeObj("tree");
+                    var nodes = treeObj.getCheckedNodes(true);
+                    var array = [];
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (nodes[i].tag == "MenuFunction") {
+                            array.push({
+                                RoleMenuFunction_RoleID: this.roleid,
+                                RoleMenuFunction_FunctionID: nodes[i].id,
+                                RoleMenuFunction_MenuID: nodes[i].pId
+                            });
+                        }
+                    }
+
+                    //保存功能
+                    admin.ajax({
+                        url: "@Url.Action("Save")",
+                        data: {
+                            Sys_RoleMenuFunctionList: array,
+                            RoleId: this.roleid
+                        },
+                        success: function (r) {
+                            if (r.status == 1) {
+                                app.getRoleMenuFunctionTree();
+                                admin.msg("保存成功!", "成功");
+                            }
+                        }
+                    });
+
+                },
+                //改变选中状态
+                checkChange: function (index) {
+                    for (item in this.Sys_RoleList) {
+                        if (item != index) {
+                            this.Sys_RoleList[item].State = 0;
+                        } else {
+                            this.Sys_RoleList[item].State = 1;
+                        }
+                    }
+                    this.roleid = this.getSelectedValue();
+                    this.getRoleMenuFunctionTree();
+                },
+                //获取选中的对象
+                getSelectedValue: function () {
+                    for (item in this.Sys_RoleList) {
+                        if (this.Sys_RoleList[item].State) return this.Sys_RoleList[item].Role_ID;
+                    }
+                },
+                //获取树
+                getRoleMenuFunctionTree: function () {
+                    admin.ajax({
+                        url: "@Url.Action("GetRoleMenuFunctionTree")",
+                        data: {
+                            roleid: this.roleid
+                        },
+                        loading: true,
+                        success: function (r) {
+                            var setting = {
+                                check: {
+                                    enable: true,
+                                    chkboxType: { "Y": "ps", "N": "ps" }
+                                },
+                                view: {
+                                    dblClickExpand: true
+                                },
+                                data: {
+                                    simpleData: {
+                                        enable: true,
+                                        idKey: "id",
+                                        pIdKey: "pId",
+                                        rootPId: 0,
+                                    },
+                                    key: { checked: 'checked' }
+                                },
+                                callback: {
+                                    onClick: function (event, treeId, treeNode) {
+                                        var treeObj = $.fn.zTree.getZTreeObj("tree");
+                                        if (treeNode.checked == false && treeNode.tag == "fun") {
+                                            treeObj.checkNode(treeNode, true, true);
+                                        } else {
+                                            treeObj.checkNode(treeNode, false, false);
+                                        }
+                                    },
+                                }
+                            };
+                            zTree = $.fn.zTree.init($("#tree"), setting, r.value);
+                            zTree.expandAll(true);//展开所有
+                        }
+                    });
+                }
+
+
+            }
+        });
+    </script>
+}

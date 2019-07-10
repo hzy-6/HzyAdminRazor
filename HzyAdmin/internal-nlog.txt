@@ -1,0 +1,1 @@
+2019-07-11 00:01:47.3631 Warn Error Watching Path E:\100MyFrame\1-HzyAdmin-Core 2.2\HzyAdmin\HzyAdmin\NLog Exception: System.ComponentModel.Win32Exception (5): 拒绝访问。
