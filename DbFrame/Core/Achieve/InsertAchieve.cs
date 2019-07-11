@@ -30,7 +30,7 @@ namespace DbFrame.Core.Achieve
 
             //如果开启了 Commit 状态
             if (this.Ado.CommitState)
-                _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), Ado._DbTransaction);
+                _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), this.Ado._DbTransaction);
             else
                 _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters());
 
@@ -47,7 +47,7 @@ namespace DbFrame.Core.Achieve
 
             //如果开启了 Commit 状态
             if (this.Ado.CommitState)
-                _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), Ado._DbTransaction);
+                _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), this.Ado._DbTransaction);
             else
                 _ResKeyId = Ado.ExecuteScalarAsync(Sql.Code.ToString(), Sql.GetDynamicParameters()).Result;
 

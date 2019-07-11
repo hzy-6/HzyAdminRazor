@@ -34,49 +34,48 @@ namespace DbFrame.Core.Achieve
         {
             using (this._DbConnection = this.GetDbConnection())
             {
-                if (_DbConnection.State == ConnectionState.Closed) _DbConnection.Open();
-                using (_DbTransaction = _DbConnection.BeginTransaction())
+                if (this._DbConnection.State == ConnectionState.Closed) this._DbConnection.Open();
+                using (this._DbTransaction = this._DbConnection.BeginTransaction())
                 {
                     try
                     {
                         //事务 状态设置 开
                         this.CommitState = true;
                         _Action?.Invoke();
-                        if (_DbTransaction != null) _DbTransaction.Commit();
+                        if (this._DbTransaction != null) this._DbTransaction.Commit();
                         return true;
                     }
                     catch (Exception ex)
                     {
-                        if (_DbTransaction != null) _DbTransaction.Rollback();
-                        _DbConnection.Close();
+                        if (this._DbTransaction != null) this._DbTransaction.Rollback();
+                        this._DbConnection.Close();
                         //事务 状态设置 关
                         this.CommitState = false;
                         throw ex;
                     }
                     finally
                     {
-                        _DbConnection.Close();
+                        this._DbConnection.Close();
                         //事务 状态设置 关
                         this.CommitState = false;
                     }
                 }
-
             }
         }
 
         public override bool Commit(Action<List<SQL>> _Action)
         {
-            using (var _dbConnection = this.GetDbConnection())
+            using (var dbConnection = this.GetDbConnection())
             {
-                if (_dbConnection.State == ConnectionState.Closed) _dbConnection.Open();
-                using (var _dbTransaction = _dbConnection.BeginTransaction())
+                if (dbConnection.State == ConnectionState.Closed) dbConnection.Open();
+                using (var _dbTransaction = dbConnection.BeginTransaction())
                 {
                     try
                     {
                         var _SqlList = new List<SQL>();
                         _Action?.Invoke(_SqlList);
 
-                        foreach (var item in _SqlList) _dbConnection.Execute(item.Code.ToString(), item.GetDynamicParameters(), _dbTransaction);
+                        foreach (var item in _SqlList) dbConnection.Execute(item.Code.ToString(), item.GetDynamicParameters(), _dbTransaction);
 
                         _dbTransaction.Commit();
                         return true;
@@ -84,12 +83,12 @@ namespace DbFrame.Core.Achieve
                     catch (Exception ex)
                     {
                         _dbTransaction.Rollback();
-                        _dbConnection.Close();
+                        dbConnection.Close();
                         throw ex;
                     }
                     finally
                     {
-                        _dbConnection.Close();
+                        dbConnection.Close();
                     }
                 }
             }
@@ -97,20 +96,19 @@ namespace DbFrame.Core.Achieve
 
         public override int Execute(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState)
-                return this._DbConnection.Execute(sql, param, transaction, commandTimeout, commandType);
+            if(this.CommitState)return this._DbConnection.Execute(sql, param, transaction, commandTimeout, commandType);
             return this.GetDbConnection().Execute(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override object ExecuteScalar(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState)
-                return this._DbConnection.ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
+            if (this.CommitState) return this._DbConnection.ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
             return this.GetDbConnection().ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override T ExecuteScalar<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
+            if (this.CommitState) return this._DbConnection.ExecuteScalar<T>(sql, param, transaction, commandTimeout, commandType);
             return this.GetDbConnection().ExecuteScalar<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
@@ -158,20 +156,19 @@ namespace DbFrame.Core.Achieve
 
         public override async Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState)
-                return await this._DbConnection.ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
+            if(this.CommitState)return await this._DbConnection.ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
             return await this.GetDbConnection().ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<object> ExecuteScalarAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState)
-                return await this._DbConnection.ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
+            if (this.CommitState) return await this._DbConnection.ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
             return await this.GetDbConnection().ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<T> ExecuteScalarAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
+            if (this.CommitState) return await this._DbConnection.ExecuteScalarAsync<T>(sql, param, transaction, commandTimeout, commandType);
             return await this.GetDbConnection().ExecuteScalarAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
 

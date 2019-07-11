@@ -25,7 +25,7 @@ namespace DbFrame.Core.Achieve
             this.ToSql();
             //如果开启了 Commit 状态
             if (Ado.CommitState)
-                return Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), Ado._DbTransaction);
+                return Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction);
             return Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters());
         }
 
@@ -34,7 +34,7 @@ namespace DbFrame.Core.Achieve
             this.ToSql();
             //如果开启了 Commit 状态
             if (Ado.CommitState)
-                return Task.FromResult(Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), Ado._DbTransaction));            
+                return Task.FromResult(Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction));            
             return (Ado.ExecuteAsync(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters()));
         }
 
