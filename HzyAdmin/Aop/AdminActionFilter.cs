@@ -14,7 +14,7 @@ namespace Aop
     /// <summary>
     /// 检查session 
     /// </summary>
-    public class AdminActionFilterFilter : ActionFilterAttribute
+    public class AdminActionFilter: ActionFilterAttribute
     {
         /// <summary>
         /// 忽略特性

@@ -18,7 +18,7 @@ namespace HzyAdmin.Areas.Admin.Controllers
     using System.Data;
 
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Aop.AdminActionFilterFilter]
+    [Aop.AdminActionFilter]
     [Area(nameof(ApiVersionsEnum.Admin))]
     public class AdminBaseController : Controller
     {
