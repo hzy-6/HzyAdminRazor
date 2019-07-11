@@ -33,6 +33,12 @@ namespace Toolkit.LogService
             _Logger = LogManager.GetCurrentClassLogger();
         }
 
+        public static void Init(string ConfigFile)
+        {
+            LogManager.LoadConfiguration(ConfigFile);
+            _Logger = LogManager.GetCurrentClassLogger();
+        }
+
         /// <summary>
         /// 写入日志
         /// </summary>
