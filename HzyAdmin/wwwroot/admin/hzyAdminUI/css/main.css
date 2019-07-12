@@ -341,7 +341,7 @@ cursor:pointer !important;
         position: relative;
         display: block;
         padding: 13px 15px;
-        color: #adb5bd;
+        color: #fff;
         outline-width: 0;
         transition: all .3s ease-out;
     }
@@ -353,15 +353,15 @@ cursor:pointer !important;
     .sidebar-nav .metismenu ul ul a {
         padding: 10px 15px 10px 45px;
     }
-    
-    .sidebar-nav .metismenu a:hover,
-    .sidebar-nav .metismenu a:focus,
-    .sidebar-nav .metismenu a:active,
-    .sidebar-nav .metismenu .mm-active>a {
-        color: #fff;
-        text-decoration: none;
-        background: #1890ff;
-    }
+
+        .sidebar-nav .metismenu a:hover,
+        .sidebar-nav .metismenu a:focus,
+        .sidebar-nav .metismenu a:active,
+        .sidebar-nav .metismenu .mm-active > a {
+            text-decoration: none;
+            /*background: #1890ff;*/
+            color: #1890ff;
+        }
     /*****nav End*****/
     /*****nav Start*****/
     
@@ -430,15 +430,15 @@ cursor:pointer !important;
     .sidebar-nav-white .metismenu ul ul a {
         padding: 10px 15px 10px 45px;
     }
-    
-    .sidebar-nav-white .metismenu a:hover,
-    .sidebar-nav-white .metismenu a:focus,
-    .sidebar-nav-white .metismenu a:active,
-    .sidebar-nav-white .metismenu .mm-active>a {
-        color: #f8f9fa;
-        text-decoration: none;
-        background: #1890ff;
-    }
+
+        .sidebar-nav-white .metismenu a:hover,
+        .sidebar-nav-white .metismenu a:focus,
+        .sidebar-nav-white .metismenu a:active,
+        .sidebar-nav-white .metismenu .mm-active > a {
+            color: #1890ff;
+            text-decoration: none;
+            /*background: #1890ff;*/
+        }
     /*****nav End*****/
     /*****nav Start 小菜单*****/
     
