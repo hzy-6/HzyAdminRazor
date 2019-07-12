@@ -145,9 +145,9 @@
                 var loadUrl = "@Url.Action("Info")";
 
                 if (tag == "add") {
-                    loadUrl = loadUrl + "?formKey=";
+                    loadUrl = loadUrl + "?formKey=&pId=" + app.pId;
                 } else {
-                    loadUrl = loadUrl + "?formKey=" + rows[0]._ukid;
+                    loadUrl = loadUrl + "?formKey=" + rows[0]._ukid + "&pId=" + app.pId;
                 }
 
                 this.adminListObject.form({
