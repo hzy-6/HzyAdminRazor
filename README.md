@@ -4,13 +4,13 @@
 基于.Net Core 2.2 开发的 通用后台管理系统！通配权限。
 
 #### 软件架构
-开发环境：vs2017、asp.net mvc 5.2
+开发环境：vs2017+ 、 NetCore 2.2.301
 
 交流群: 534584927
 
 前端：BootStrap 4 Layer Jquery
 
-后端：NetCore 2.2.301
+后端：NetCore 2.2.301 一定要安装等于或者大于该版本的SDK
 
 文档、演示：http://hzyadmin.milaizhijie.com
 
