@@ -129,7 +129,8 @@ namespace Logic.SysClass
             {
                 status = 1,
                 pname = _Parent_Menu.Menu_Name.ToStr(),
-                Sys_FunctionList = _Sys_FunctionList
+                Sys_FunctionList = _Sys_FunctionList,
+                Sys_MenuFunctionList = new List<dynamic>()
             }, _Sys_Menu);
 
             return _Form;
