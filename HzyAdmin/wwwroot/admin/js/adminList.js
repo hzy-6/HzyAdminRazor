@@ -68,7 +68,7 @@ window.adminList = (function () {
                     sortName: null,//定义排序列,通过url方式获取数据填写字段名，否则填写下标
                     sortOrder: "asc",//定义排序方式 'asc' 或者 'desc'
                     //buttonsToolbar: '#tools',
-                    height: $(window).height() - 35,
+                    height: $(window).height() - 50,
                     data: [],
                     responseHandler: function (res) {
                         return res;
@@ -195,7 +195,7 @@ window.adminList = (function () {
 
                 // Add responsive   表格自适应
                 $(window).bind('resize', function () {
-                    tableObject.bootstrapTable('resetView', { height: $(window).height() - 35 });
+                    tableObject.bootstrapTable('resetView', { height: $(window).height() - 50 });
                 });
 
                 this.tableObject = tableObject;
