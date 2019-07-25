@@ -8,7 +8,7 @@
 
 交流群: 534584927
 
-前端：BootStrap 4 Layer Jquery
+前端：BootStrap 4、Layer、Jquery、Vue
 
 后端：NetCore 2.2.301 一定要安装等于或者大于该版本的SDK
 
