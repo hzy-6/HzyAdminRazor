@@ -14,7 +14,7 @@
 
 文档、演示：http://hzyadmin.milaizhijie.com
 
-数据库脚本位置：wwwroot/AppDb/appdb.sql
+数据库脚本位置：HzyAdmin/wwwroot/AppDb/appdb.sql
 
 
 #### 部分界面截图
