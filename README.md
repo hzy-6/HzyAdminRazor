@@ -8,13 +8,13 @@
 
 交流群: 534584927
 
-前端：BootStrap 4 Layer Jquery
+前端：BootStrap 4、Layer、Jquery、Vue
 
 后端：NetCore 2.2.301 一定要安装等于或者大于该版本的SDK
 
 文档、演示：http://hzyadmin.milaizhijie.com
 
-数据库脚本位置：wwwroot/AppDb/appdb.sql
+数据库脚本位置：HzyAdmin/wwwroot/AppDb/appdb.sql
 
 
 #### 部分界面截图
