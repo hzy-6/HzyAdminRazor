@@ -25,7 +25,7 @@ namespace DbFrame.Core.Abstract.Query
         public abstract IMappingData Distinct();
         public abstract IMappingData TakePage(int PageNumber, int PageSize);
         public abstract IMappingData TakePage(int PageNumber, int PageSize, out int TotalCount);
-        public abstract IMappingData ToSql(Action<SQL> _Action);
+        public abstract IMappingData ToSql(out SQL _SQL);
 
         #region Async
         public abstract Task<T> FristAsync();

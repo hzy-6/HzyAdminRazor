@@ -148,14 +148,14 @@ namespace Logic.SysClass
         {
             var _Sys_MenuAllList = await db.Query<Sys_Menu>(w => w.t1.Menu_IsShow == 1).OrderBy(w => w.t1.Menu_Num).ToListAsync();
             if (_Account.IsSuperManage) return _Sys_MenuAllList;
-            DbFrame.BaseClass.SQL _s = null;
+
             var _Sys_MenuList = await db
                 .Query<Sys_RoleMenuFunction>(w => w.t1.RoleMenuFunction_RoleID == _Account.RoleID)
                 .Join<Sys_Function>(w => w.t1.RoleMenuFunction_FunctionID == w.t2.Function_ID)
                 .Join<Sys_Menu>(w => w.t1.RoleMenuFunction_MenuID == w.t3.Menu_ID)
                 .Where(w => w.t2.Function_Num == "10")
                 .Select(w => w.t3)
-                .ToSql(s => _s = s)
+                .ToSql(out DbFrame.BaseClass.SQL Sql)
                 .ToListAsync<Sys_Menu>();
 
             var _New_Sys_MenuList = new List<Sys_Menu>();

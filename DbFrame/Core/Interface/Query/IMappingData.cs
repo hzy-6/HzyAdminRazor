@@ -30,7 +30,7 @@ namespace DbFrame.Core.Interface.Query
         IMappingData Distinct();
         IMappingData TakePage(int PageNumber, int PageSize);
         IMappingData TakePage(int PageNumber, int PageSize, out int TotalCount);
-        IMappingData ToSql(Action<SQL> _Action);
+        IMappingData ToSql(out SQL _SQL);
     }
 
     public interface IMappingData<T> : IMappingData

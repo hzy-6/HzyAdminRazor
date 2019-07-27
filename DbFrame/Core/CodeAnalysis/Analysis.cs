@@ -316,11 +316,6 @@ namespace DbFrame.Core.CodeAnalysis
                 _Sql.Code.AppendFormat(" WHERE 1=1 {0}", _Sql.Code_Where);
             }
 
-            if (!string.IsNullOrEmpty(_Sql.Code_OrderBy.ToString()))
-            {
-                _Sql.Code.AppendFormat(" ORDER BY {0}", _Sql.Code_OrderBy);
-            }
-
             if (!string.IsNullOrEmpty(_Sql.Code_GroupBy.ToString()))
             {
                 _Sql.Code.AppendFormat(" GROUP BY {0}", _Sql.Code_GroupBy);
@@ -329,6 +324,11 @@ namespace DbFrame.Core.CodeAnalysis
             if (!string.IsNullOrEmpty(_Sql.Code_Having.ToString()))
             {
                 _Sql.Code.AppendFormat(" HAVING {0}", _Sql.Code_Having);
+            }
+
+            if (!string.IsNullOrEmpty(_Sql.Code_OrderBy.ToString()))
+            {
+                _Sql.Code.AppendFormat(" ORDER BY {0}", _Sql.Code_OrderBy);
             }
 
             //ROW_NUMBER 分页

@@ -144,9 +144,9 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
-        public override IMappingData ToSql(Action<SQL> _Action)
+        public override IMappingData ToSql(out SQL _SQL)
         {
-            _Action(this.ToSql());
+            _SQL = this.ToSql();
             return this;
         }
 
