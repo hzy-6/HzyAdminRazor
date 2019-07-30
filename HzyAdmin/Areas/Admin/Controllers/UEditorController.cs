@@ -4,7 +4,7 @@ using UEditor.Core;
 
 namespace HzyAdmin.Areas.Admin.Controllers
 {
-    //[EnableCors("any")]//跨域
+    //[EnableCors("ApiAny")]//跨域
     public class UEditorController : AdminBaseController
     {
         private readonly UEditorService _ueditorService;
