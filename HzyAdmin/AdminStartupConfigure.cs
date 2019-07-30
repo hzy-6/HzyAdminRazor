@@ -204,6 +204,10 @@ namespace HzyAdmin
             });
             #endregion
 
+            #region 使用跨域
+            //app.UseCors("ApiAny");
+            #endregion
+
         }
 
 
