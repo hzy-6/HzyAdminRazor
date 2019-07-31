@@ -8,6 +8,7 @@ namespace DbFrame.Core.Achieve
     using DbFrame.Core.Abstract;
     using DbFrame.Core.CodeAnalysis;
     using DbFrame.Core.Interface;
+    using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
@@ -30,9 +31,9 @@ namespace DbFrame.Core.Achieve
 
             //如果开启了 Commit 状态
             if (this.Ado.CommitState)
-                _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), this.Ado._DbTransaction);
+                _ResKeyId = this.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), this.Ado._DbTransaction);
             else
-                _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters());
+                _ResKeyId = this.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters());
 
             if (_ResKeyId == null)
                 return (this._KeyFieldDescribe == null) ? null : _KeyId;
@@ -47,9 +48,9 @@ namespace DbFrame.Core.Achieve
 
             //如果开启了 Commit 状态
             if (this.Ado.CommitState)
-                _ResKeyId = Ado.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), this.Ado._DbTransaction);
+                _ResKeyId = this.ExecuteScalar(Sql.Code.ToString(), Sql.GetDynamicParameters(), this.Ado._DbTransaction);
             else
-                _ResKeyId = Ado.ExecuteScalarAsync(Sql.Code.ToString(), Sql.GetDynamicParameters()).Result;
+                _ResKeyId = this.ExecuteScalarAsync(Sql.Code.ToString(), Sql.GetDynamicParameters()).Result;
 
             if (_ResKeyId == null)
                 return (this._KeyFieldDescribe == null) ? null : Task.FromResult(_KeyId);

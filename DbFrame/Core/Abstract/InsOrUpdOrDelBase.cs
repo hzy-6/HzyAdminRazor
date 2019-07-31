@@ -4,9 +4,12 @@ using System.Text;
 
 namespace DbFrame.Core.Abstract
 {
+    using Dapper;
     using DbFrame.BaseClass;
     using DbFrame.Core.CodeAnalysis;
+    using System.Data;
     using System.Linq.Expressions;
+    using System.Threading.Tasks;
 
     public class InsOrUpdOrDelBase<T>
     {
@@ -55,6 +58,49 @@ namespace DbFrame.Core.Abstract
         }
 
 
+        #region Ado
+
+        protected int Execute(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            if (Ado.CommitState) return Ado._DbConnection.Execute(sql, param, transaction, commandTimeout, commandType);
+            return Ado.GetDbConnection().Execute(sql, param, transaction, commandTimeout, commandType);
+        }
+
+        protected object ExecuteScalar(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            if (Ado.CommitState) return Ado._DbConnection.ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
+            return Ado.GetDbConnection().ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
+        }
+
+        protected TR ExecuteScalar<TR>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            if (Ado.CommitState) return Ado._DbConnection.ExecuteScalar<TR>(sql, param, transaction, commandTimeout, commandType);
+            return Ado.GetDbConnection().ExecuteScalar<TR>(sql, param, transaction, commandTimeout, commandType);
+        }
+
+        #endregion
+
+        #region Ado Async
+
+        protected async Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            if (Ado.CommitState) return await Ado._DbConnection.ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
+            return await Ado.GetDbConnection().ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
+        }
+
+        protected async Task<object> ExecuteScalarAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            if (Ado.CommitState) return await Ado._DbConnection.ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
+            return await Ado.GetDbConnection().ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
+        }
+
+        protected async Task<TR> ExecuteScalarAsync<TR>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            if (Ado.CommitState) return await Ado._DbConnection.ExecuteScalarAsync<TR>(sql, param, transaction, commandTimeout, commandType);
+            return await Ado.GetDbConnection().ExecuteScalarAsync<TR>(sql, param, transaction, commandTimeout, commandType);
+        }
+
+        #endregion
 
     }
 }

@@ -165,10 +165,7 @@ namespace DbFrame
         /// <param name="obj"></param>
         /// <param name="array"></param>
         /// <returns></returns>
-        public static bool In<T, T1>(this HzyTuple obj, T1 field, List<T> array)
-        {
-            return true;
-        }
+        public static bool In<T, T1>(this HzyTuple obj, T1 field, List<T> array) => true;
 
         /// <summary>
         /// 在 拉姆达表达式 where 表达式中使用 w => w.NotIn(w.t1.Member_ID, guidsArray)
@@ -177,10 +174,7 @@ namespace DbFrame
         /// <param name="obj"></param>
         /// <param name="array"></param>
         /// <returns></returns>
-        public static bool NotIn<T, T1>(this HzyTuple obj, T1 field, List<T> array)
-        {
-            return true;
-        }
+        public static bool NotIn<T, T1>(this HzyTuple obj, T1 field, List<T> array) => true;
 
         /// <summary>
         /// 一般在Where 条件中使用 例如 : w.SqlStr("convert(varchar(50),UserName,23)")
@@ -191,10 +185,7 @@ namespace DbFrame
         /// <param name="obj"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool SqlStr(this HzyTuple obj, string value)
-        {
-            return true;
-        }
+        public static bool SqlStr(this HzyTuple obj, string value) => true;
 
         /// <summary>
         /// 一般在Where 条件中使用 例如 : w.SqlStr("convert(varchar(50),UserName,23)")
@@ -205,11 +196,7 @@ namespace DbFrame
         /// <param name="obj"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static TReturn SqlStr<TReturn>(this HzyTuple obj, string value)
-        {
-            return default(TReturn);
-        }
-
+        public static TReturn SqlStr<TReturn>(this HzyTuple obj, string value) => default(TReturn);
     }
 
 
@@ -241,10 +228,7 @@ namespace DbFrame
         /// <param name="_type"></param>
         /// <param name="_bindingFlags"></param>
         /// <returns></returns>
-        public static PropertyInfo[] GetPropertyInfos(Type _type, BindingFlags _bindingFlags = (BindingFlags.Instance | BindingFlags.Public))
-        {
-            return _type.GetProperties(_bindingFlags);
-        }
+        public static PropertyInfo[] GetPropertyInfos(Type _type, BindingFlags _bindingFlags = (BindingFlags.Instance | BindingFlags.Public)) => _type.GetProperties(_bindingFlags);
 
         /// <summary>
         /// 创建 对象实例
@@ -266,10 +250,9 @@ namespace DbFrame
         /// <param name="_type"></param>
         /// <param name="_name"></param>
         /// <returns></returns>
-        public static T GetAttribute<T>(Type _type, string _name) where T : Attribute
-        {
-            return Parser.GetPropertyInfo(_type, _name).GetCustomAttribute(typeof(T)) as T;
-        }
+        public static T GetAttribute<T>(Type _type, string _name)
+            where T : Attribute
+            => Parser.GetPropertyInfo(_type, _name).GetCustomAttribute(typeof(T)) as T;
 
         /// <summary>
         /// 获取 PropertyInfo 对象
@@ -277,20 +260,14 @@ namespace DbFrame
         /// <param name="_type"></param>
         /// <param name="_name"></param>
         /// <returns></returns>
-        public static PropertyInfo GetPropertyInfo(Type _type, string _name)
-        {
-            return _type.GetProperty(_name);
-        }
+        public static PropertyInfo GetPropertyInfo(Type _type, string _name) => _type.GetProperty(_name);
 
         /// <summary>
         /// 获取 TableAttribute
         /// </summary>
         /// <param name="_type"></param>
         /// <returns></returns>
-        public static TableAttribute GetTableAttribute(Type _type)
-        {
-            return (TableAttribute)Attribute.GetCustomAttributes(_type, true).Where(item => item is TableAttribute).FirstOrDefault();
-        }
+        public static TableAttribute GetTableAttribute(Type _type) => (TableAttribute)Attribute.GetCustomAttributes(_type, true).Where(item => item is TableAttribute).FirstOrDefault();
 
         /// <summary>
         /// Eval
@@ -304,19 +281,7 @@ namespace DbFrame
         }
 
         /// <summary>
-        /// 获取 DynamicParameters 对象
-        /// </summary>
-        /// <param name="dbParams"></param>
-        /// <returns></returns>
-        public static DynamicParameters GetDynamicParameters(List<DbParam> dbParams)
-        {
-            var _DynamicParameters = new DynamicParameters();
-            foreach (var item in dbParams) _DynamicParameters.Add(item.ParameterName, item.Value);
-            return _DynamicParameters;
-        }
-
-        /// <summary>
-        /// 根据实体对象 的 ID 创建 Expression<Func<T, bool>> 表达式树
+        /// 根据实体对象 的 ID 创建 Expression<Func<HzyTuple<T>, bool>> 表达式树 例如： Lambda = ( w=>w.t1.Key==Guid.Empty )
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="_KeyName"></param>
@@ -328,31 +293,23 @@ namespace DbFrame
             var _Type = typeof(HzyTuple<T>);
             var _Parmeter = Expression.Parameter(_Type, "w");
             var _Where_Parameter = Expression.Parameter(_Type, _ParName);
-            var _Propertie = _Type.GetProperties()[0];
-            var _Property = _Type.GetProperty(_Propertie.Name);
-
+            var _Property = _Type.GetProperty(nameof(HzyTuple<T>.t1));
+            //元组参数
             var _Left = Expression.Property(_Parmeter, _Property);
-
+            //字段名
             var _KeyProperty = _Property.PropertyType.GetProperty(_KeyName);
-
+            //w=>w.t1.Key
             var _NewLeft = Expression.Property(_Left, _KeyProperty);
+            //==Guid.Empty
+            var _Sign = _KeyValue == null;
+            if (!_Sign) _Sign = (_KeyValue is string & string.IsNullOrWhiteSpace(_KeyValue.ToString()));
+            if (_KeyProperty.PropertyType == typeof(Guid) & _Sign) _KeyValue = Guid.Empty;
+            if (_KeyProperty.PropertyType == typeof(int) & _Sign) _KeyValue = Int32.MinValue;
 
-            if (_KeyValue == null)
-            {
-                if (_KeyProperty.PropertyType == typeof(Guid)) _KeyValue = Guid.Empty;
-
-                if (_KeyProperty.PropertyType == typeof(int)) _KeyValue = Int32.MinValue;
-            }
-            ConstantExpression _Right = Expression.Constant(_KeyValue);
             try
             {
-                if (_KeyProperty.PropertyType == typeof(Guid)) _Right = Expression.Constant(_KeyValue, typeof(Guid));
-
-                if (_KeyProperty.PropertyType == typeof(int)) _Right = Expression.Constant(_KeyValue, typeof(int));
-
-                if (_KeyProperty.PropertyType == typeof(Guid?)) _Right = Expression.Constant(_KeyValue, typeof(Guid?));
-
-                if (_KeyProperty.PropertyType == typeof(int?)) _Right = Expression.Constant(_KeyValue, typeof(int?));
+                var _Where_Body = Expression.Equal(_NewLeft, Expression.Constant(_KeyValue, _KeyProperty.PropertyType));
+                return Expression.Lambda<Func<HzyTuple<T>, bool>>(_Where_Body, _Where_Parameter);
             }
             catch (Exception ex)
             {
@@ -361,9 +318,6 @@ namespace DbFrame
                 else
                     throw ex;
             }
-
-            var _Where_Body = Expression.Equal(_NewLeft, _Right);
-            return Expression.Lambda<Func<HzyTuple<T>, bool>>(_Where_Body, _Where_Parameter);
         }
 
 

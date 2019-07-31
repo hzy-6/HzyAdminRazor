@@ -24,8 +24,8 @@ namespace DbFrame.Core.Achieve
             this.ToSql();
             //如果开启了 Commit 状态
             if (Ado.CommitState)
-                return Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction);
-            return Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters());
+                return this.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction);
+            return this.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters());
         }
 
         public override Task<int> ExecuteAsync()
@@ -33,8 +33,8 @@ namespace DbFrame.Core.Achieve
             this.ToSql();
             //如果开启了 Commit 状态
             if (Ado.CommitState)
-                return Task.FromResult(Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction));
-            return Ado.ExecuteAsync(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters());
+                return Task.FromResult(this.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction));
+            return this.ExecuteAsync(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters());
         }
 
         public override IDelete<T> Where(Expression<Func<HzyTuple<T>, bool>> Where)

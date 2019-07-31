@@ -7,6 +7,7 @@ namespace DbFrame.Core.Abstract
     using DbFrame.BaseClass;
     using DbFrame.Core.CodeAnalysis;
     using DbFrame.Core.Interface;
+    using System.Data;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DbFrame.Core.Interface
 {
+    using System.Data;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using DbFrame.BaseClass;

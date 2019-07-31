@@ -5,6 +5,7 @@ using System.Text;
 namespace DbFrame.Core.Interface
 {
     using DbFrame.BaseClass;
+    using System.Data;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 

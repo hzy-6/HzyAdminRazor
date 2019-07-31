@@ -8,6 +8,7 @@ namespace DbFrame.Core.Achieve
     using DbFrame.Core.Abstract;
     using DbFrame.Core.CodeAnalysis;
     using DbFrame.Core.Interface;
+    using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
@@ -25,8 +26,8 @@ namespace DbFrame.Core.Achieve
             this.ToSql();
             //如果开启了 Commit 状态
             if (Ado.CommitState)
-                return Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction);
-            return Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters());
+                return this.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction);
+            return this.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters());
         }
 
         public override Task<int> ExecuteAsync()
@@ -34,8 +35,8 @@ namespace DbFrame.Core.Achieve
             this.ToSql();
             //如果开启了 Commit 状态
             if (Ado.CommitState)
-                return Task.FromResult(Ado.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction));            
-            return (Ado.ExecuteAsync(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters()));
+                return Task.FromResult(this.Execute(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters(), this.Ado._DbTransaction));
+            return (this.ExecuteAsync(this.Sql.Code.ToString(), this.Sql.GetDynamicParameters()));
         }
 
         public override IUpdate<T> IgnoreCols(Expression<Func<T, dynamic>> IgnoreColumns)

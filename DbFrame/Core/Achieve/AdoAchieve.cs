@@ -96,19 +96,16 @@ namespace DbFrame.Core.Achieve
 
         public override int Execute(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if(this.CommitState)return this._DbConnection.Execute(sql, param, transaction, commandTimeout, commandType);
             return this.GetDbConnection().Execute(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override object ExecuteScalar(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState) return this._DbConnection.ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
             return this.GetDbConnection().ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override T ExecuteScalar<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState) return this._DbConnection.ExecuteScalar<T>(sql, param, transaction, commandTimeout, commandType);
             return this.GetDbConnection().ExecuteScalar<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
@@ -156,19 +153,16 @@ namespace DbFrame.Core.Achieve
 
         public override async Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if(this.CommitState)return await this._DbConnection.ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
             return await this.GetDbConnection().ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<object> ExecuteScalarAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState) return await this._DbConnection.ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
             return await this.GetDbConnection().ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<T> ExecuteScalarAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (this.CommitState) return await this._DbConnection.ExecuteScalarAsync<T>(sql, param, transaction, commandTimeout, commandType);
             return await this.GetDbConnection().ExecuteScalarAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
