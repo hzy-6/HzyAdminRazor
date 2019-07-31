@@ -9,6 +9,7 @@ namespace DbFrame
     using System.Reflection;
     using DbFrame.BaseClass;
     using Dapper;
+    using System.Text;
 
     public static class DbMappingExtension
     {
@@ -197,6 +198,52 @@ namespace DbFrame
         /// <param name="value"></param>
         /// <returns></returns>
         public static TReturn SqlStr<TReturn>(this HzyTuple obj, string value) => default(TReturn);
+
+        /// <summary>
+        /// UNION 操作符选取不同的值。如果允许重复的值，请使用 UNION ALL。 
+        /// </summary>
+        /// <param name="Sql1"></param>
+        /// <param name="Sql2"></param>
+        /// <returns></returns>
+        public static SQL Union(this SQL Sql1, SQL Sql2)
+        {
+            StringBuilder _StringBuilder = new StringBuilder();
+            var _ParameterList = Sql1.Parameter.Concat(Sql2.Parameter).ToList();
+            _StringBuilder.Append(Sql1.Code);
+            _StringBuilder.Append(" UNION ");
+            _StringBuilder.Append(Sql2.Code);
+
+            var res = new SQL();
+            res.Code = _StringBuilder;
+            res.Parameter = _ParameterList;
+            return res;
+        }
+
+        /// <summary>
+        /// UNION ALL 命令会列出所有的值。
+        /// </summary>
+        /// <param name="Sql1"></param>
+        /// <param name="Sql2"></param>
+        /// <returns></returns>
+        public static SQL UnionAll(this SQL Sql1, SQL Sql2)
+        {
+            StringBuilder _StringBuilder = new StringBuilder();
+            var _ParameterList = Sql1.Parameter.Concat(Sql2.Parameter).ToList();
+            _StringBuilder.Append(Sql1.Code);
+            _StringBuilder.Append(" UNION ALL ");
+            _StringBuilder.Append(Sql2.Code);
+
+            var res = new SQL();
+            res.Code = _StringBuilder;
+            res.Parameter = _ParameterList;
+            return res;
+        }
+
+
+
+
+
+
     }
 
 
