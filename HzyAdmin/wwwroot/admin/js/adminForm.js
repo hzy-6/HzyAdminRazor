@@ -106,6 +106,12 @@ window.adminForm = (function () {
                 for (item in vueData) {
                     _FormData.append(item, vueData[item]);
                 }
+
+                for (var i = 0; i < ignoreDataObject.length; i++) {
+                    var item = ignoreDataObject[i];
+                    _FormData.delete(item);
+                }
+
                 return _FormData;
             },
             //设置窗口标题
