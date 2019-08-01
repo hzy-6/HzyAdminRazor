@@ -96,44 +96,44 @@ namespace DbFrame.Core.Achieve
 
         public override int Execute(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return this.GetDbConnection().Execute(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return conn.Execute(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override object ExecuteScalar(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return this.GetDbConnection().ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return conn.ExecuteScalar(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override T ExecuteScalar<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return this.GetDbConnection().ExecuteScalar<T>(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return conn.ExecuteScalar<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override IEnumerable<T> Query<T>(string sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
         {
             if (typeof(T).Name == new Dictionary<string, object>().GetType().Name)
                 return (IEnumerable<T>)(this.QueryDataTable(sql, param, transaction, commandTimeout, commandType).ToList());
-            return this.GetDbConnection().Query<T>(sql, param, transaction, buffered, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return conn.Query<T>(sql, param, transaction, buffered, commandTimeout, commandType);
         }
 
         public override IDataReader ExecuteReader(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return this.GetDbConnection().ExecuteReader(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return conn.ExecuteReader(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override DataTable QueryDataTable(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return this.ExecuteReader(sql, param, transaction, commandTimeout, commandType).ToDataTable();
+            using (var conn = this.GetDbConnection()) return conn.ExecuteReader(sql, param, transaction, commandTimeout, commandType).ToDataTable();
         }
 
         public override T QuerySingleOrDefault<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return this.GetDbConnection().QuerySingleOrDefault<T>(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return conn.QuerySingleOrDefault<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override T QueryFirstOrDefault<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return this.GetDbConnection().QueryFirstOrDefault<T>(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return conn.QueryFirstOrDefault<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
         #endregion
@@ -153,45 +153,44 @@ namespace DbFrame.Core.Achieve
 
         public override async Task<int> ExecuteAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await this.GetDbConnection().ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return await conn.ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<object> ExecuteScalarAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await this.GetDbConnection().ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return await conn.ExecuteScalarAsync(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<T> ExecuteScalarAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await this.GetDbConnection().ExecuteScalarAsync<T>(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return await conn.ExecuteScalarAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
             if (typeof(T).Name == new Dictionary<string, object>().GetType().Name)
                 return (IEnumerable<T>)((await this.QueryDataTableAsync(sql, param, transaction, commandTimeout, commandType)).ToList());
-            return await this.GetDbConnection().QueryAsync<T>(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return await conn.QueryAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<IDataReader> ExecuteReaderAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await this.GetDbConnection().ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return await conn.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<DataTable> QueryDataTableAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            var _IDataReader = await this.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType);
-            return _IDataReader.ToDataTable();
+            using (var conn = this.GetDbConnection()) return (await conn.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType)).ToDataTable();
         }
 
         public override async Task<T> QuerySingleOrDefaultAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await this.GetDbConnection().QuerySingleOrDefaultAsync<T>(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return await conn.QuerySingleOrDefaultAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
         public override async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            return await this.GetDbConnection().QueryFirstOrDefaultAsync<T>(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection()) return await conn.QueryFirstOrDefaultAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
         #endregion

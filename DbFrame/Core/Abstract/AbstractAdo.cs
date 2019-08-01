@@ -34,7 +34,7 @@ namespace DbFrame.Core.Abstract
         /// <summary>
         /// 事务对象
         /// </summary>
-        public IDbTransaction _DbTransaction { get; set; } 
+        public IDbTransaction _DbTransaction { get; set; }
         /// <summary>
         /// 获取连接对象
         /// </summary>

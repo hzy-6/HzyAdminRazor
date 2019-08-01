@@ -14,8 +14,10 @@ namespace DbFrame.Core.Interface
         /*Insert*/
         #region Insert
 
+        IEnumerable<object> Insert<T>(IEnumerable<T> Entitys);
         object Insert<T>(T Entity);
         object Insert<T>(Expression<Func<T>> Entity);
+        Task<IEnumerable<object>> InsertAsync<T>(IEnumerable<T> Entitys);
         Task<object> InsertAsync<T>(T Entity);
         Task<object> InsertAsync<T>(Expression<Func<T>> Entity);
         IInsert<T> InsertObject<T>(T Entity);

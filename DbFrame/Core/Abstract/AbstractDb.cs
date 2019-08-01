@@ -32,8 +32,11 @@ namespace DbFrame.Core.Abstract
         }
 
         #region Insert
+
+        public abstract IEnumerable<object> Insert<T>(IEnumerable<T> Entitys);
         public abstract object Insert<T>(T Entity);
         public abstract object Insert<T>(Expression<Func<T>> Entity);
+        public abstract Task<IEnumerable<object>> InsertAsync<T>(IEnumerable<T> Entitys);
         public abstract Task<object> InsertAsync<T>(T Entity);
         public abstract Task<object> InsertAsync<T>(Expression<Func<T>> Entity);
         public abstract IInsert<T> InsertObject<T>(T Entity);

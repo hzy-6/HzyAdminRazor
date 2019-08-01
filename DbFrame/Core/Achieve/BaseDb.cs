@@ -39,6 +39,19 @@ namespace DbFrame.Core.Achieve
         #region Insert
 
         /// <summary>
+        /// Insert 批量添加
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Entitys"></param>
+        /// <returns></returns>
+        public override IEnumerable<object> Insert<T>(IEnumerable<T> Entitys)
+        {
+            var Keys = new List<object>();
+            foreach (var item in Entitys) Keys.Add(this.Insert(item));
+            return Keys;
+        }
+
+        /// <summary>
         /// Insert
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -60,6 +73,19 @@ namespace DbFrame.Core.Achieve
         {
             var _Insert = this.InsertObject(Entity);
             return _Insert.Execute();
+        }
+
+        /// <summary>
+        /// Insert 批量添加
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Entitys"></param>
+        /// <returns></returns>
+        public override async Task<IEnumerable<object>> InsertAsync<T>(IEnumerable<T> Entitys)
+        {
+            var Keys = new List<object>();
+            foreach (var item in Entitys) Keys.Add(await this.InsertAsync(item));
+            return Keys;
         }
 
         /// <summary>
