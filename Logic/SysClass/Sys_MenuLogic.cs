@@ -77,13 +77,17 @@ namespace Logic.SysClass
                     if (!db.UpdateById(model)) throw new MessageBox(this.ErrorMessage);
                 }
 
-                //删除菜单的功能
-                db.Delete<Sys_MenuFunction>(w => w.t1.MenuFunction_MenuID == model.Menu_ID.ToGuid());
-                _Sys_MenuFunctionList.ForEach(item =>
+                if (_Sys_MenuFunctionList.Count > 0)
                 {
-                    item.MenuFunction_MenuID = model.Menu_ID;
-                    db.Insert(item);
-                });
+                    //删除菜单的功能
+                    db.Delete<Sys_MenuFunction>(w => w.t1.MenuFunction_MenuID == model.Menu_ID.ToGuid());
+                    _Sys_MenuFunctionList.ForEach(item =>
+                    {
+                        item.MenuFunction_MenuID = model.Menu_ID;
+                        db.Insert(item);
+                    });
+                }
+
             });
             return model.Menu_ID.ToGuidStr();
         }
