@@ -18,9 +18,20 @@ var hzy = {
         menuSessionName: 'adminMW',
         menuSkinSessionName: 'adminMenuSkin'
     },
-    init: function () {
+    header: {
+        keyName: 'headerSkin',
+        init: function() {
+            var skin = window.localStorage.getItem(hzy.header.keyName);
+            if (skin) $('.hzy-container header').removeAttr('class').addClass(skin);
+        },
+        setSkin: function(skin) {
+            $('.hzy-container header').removeAttr('class').addClass(skin);
+            window.localStorage.setItem(hzy.header.keyName, skin);
+        }
+    },
+    init: function() {
         //路由事件 触发回调
-        hzyRouter.settings.callback = function (t, k, p, h) {
+        hzyRouter.settings.callback = function(t, k, p, h) {
             //t:标题 h:链接地址 p:参数
             //console.log('t=', t, 'k=', k, 'p=', p, 'h', h)
             var hash = top.window.location.hash;
@@ -31,34 +42,35 @@ var hzy = {
             });
         };
         //给有 hzy-router= 特性的标签添加click
-        $(hzy.settings.mainContainer).on('click', '[hzy-router]', function () {
+        $(hzy.settings.mainContainer).on('click', '[hzy-router]', function() {
             var _routers = $(this).attr("hzy-router");
             var _router = _routers.split('#!');
             hzy.jumpPage(_router[1], _router[2]);
         });
 
+        hzy.header.init();
         hzy.tabs.init();
         hzy.menu.init();
-        window.onresize = function () {
+        window.onresize = function() {
             hzy.resize();
         };
     },
-    resize: function () {
+    resize: function() {
         $(hzy.settings.tabsContainer).offset({
             left: hzy.tabs.initUlOffsetLeft
         });
         hzy.tabs.setTabDomInit();
         hzy.menu.init();
     },
-    isPc: function () {
+    isPc: function() {
         return window.innerWidth > 990;
     },
     //跳转页面
-    jumpPage: function (text, href) {
+    jumpPage: function(text, href) {
         hzyRouter.load(text, href);
     },
     //加载页面
-    loadPage: function (href, callback) {
+    loadPage: function(href, callback) {
         var _pageContainer = $(hzy.settings.pageContainer);
         var _temp = `<iframe class="hzy-iframe hzy-iframe-active" frameborder="0" src="` + href + `" name="` + href + `"></iframe>`;
         var _loadHtml = `
@@ -72,8 +84,8 @@ var hzy = {
                 _pageContainer.parent().append(_loadHtml);
                 _pageContainer.append(_temp);
                 _iframe = _pageContainer.find('iframe[src="' + href + '"]');
-                hzy.handleIframeLoadSuccess(_iframe[0], function () {
-                    setTimeout(function () {
+                hzy.handleIframeLoadSuccess(_iframe[0], function() {
+                    setTimeout(function() {
                         _pageContainer.parent().find('.hzy-page-loader').remove();
                     }, 300);
                 });
@@ -88,8 +100,8 @@ var hzy = {
             _pageContainer.parent().append(_loadHtml);
             _pageContainer.append(_temp);
             var _iframe = _pageContainer.find('iframe[src="' + href + '"]');
-            hzy.handleIframeLoadSuccess(_iframe[0], function () {
-                setTimeout(function () {
+            hzy.handleIframeLoadSuccess(_iframe[0], function() {
+                setTimeout(function() {
                     _pageContainer.parent().find('.hzy-page-loader').remove();
                 }, 300);
             });
@@ -103,10 +115,10 @@ var hzy = {
             href += '?pt=tabs';
         }
         _pageContainer.parent().append(_loadHtml);
-        _pageContainer.load(href, function (response, status, xhr) {
+        _pageContainer.load(href, function(response, status, xhr) {
             //if (status === 'success') console.log('页面' + href + '加载成功!');
             if (callback) callback();
-            setTimeout(function () {
+            setTimeout(function() {
                 _pageContainer.parent().find('.hzy-page-loader').remove();
             }, 300);
         });
@@ -122,7 +134,7 @@ var hzy = {
             default: 'sidebar-nav',
             white: 'sidebar-nav-white'
         },
-        init: function () {
+        init: function() {
             var _menu = $(hzy.settings.menuContainer);
             if (!hzy.isPc()) {
                 if (_menu.hasClass(hzy.menu.mMaxWidth)) {
@@ -141,7 +153,7 @@ var hzy = {
             }
         },
         //激活菜单 选中状态
-        active: function (text, href) {
+        active: function(text, href) {
             //激活左侧菜单
             // hzy-router="#!首页2#!views/home2.html"
             if (!hzy.menu.domObject) return;
@@ -157,14 +169,14 @@ var hzy = {
             }
             hzy.tabs.location();
         },
-        toggle: function () {
+        toggle: function() {
             var _menuContainer = $(hzy.settings.menuContainer);
             if (_menuContainer.hasClass(hzy.menu.mMaxWidth))
                 hzy.menu.min(_menuContainer);
             else
                 hzy.menu.max(_menuContainer);
         },
-        max: function (_menuContainer) {
+        max: function(_menuContainer) {
             _menuContainer.addClass(hzy.menu.mMaxWidth);
             _menuContainer.removeClass(hzy.menu.mMinWidth);
             if (hzy.isPc())
@@ -172,7 +184,7 @@ var hzy = {
             else
                 window.localStorage.removeItem(hzy.settings.menuSessionName);
         },
-        min: function (_menuContainer) {
+        min: function(_menuContainer) {
             _menuContainer.addClass(hzy.menu.mMinWidth);
             _menuContainer.removeClass(hzy.menu.mMaxWidth);
             if (hzy.isPc())
@@ -180,7 +192,7 @@ var hzy = {
             else
                 window.localStorage.removeItem(hzy.settings.menuSessionName);
         },
-        setSkin: function (skin) {
+        setSkin: function(skin) {
             var _menu = $(hzy.settings.menuContainer);
             _menu.removeClass(hzy.menu.mSkin.default).removeClass(hzy.menu.mSkin.white);
             _menu.addClass(skin);
@@ -195,11 +207,11 @@ var hzy = {
         initUlOffsetLeft: 0, //ul 第一次偏移量
         leftAndRightLock: true, //对点击左移动和右移动加锁
         moveSpeed: 300, //选项卡移动延迟
-        init: function () {
+        init: function() {
             hzy.tabs.setTabDomInit();
             hzy.tabs.initUlOffsetLeft = $(hzy.settings.tabsContainer).offset().left;
             //监听鼠标滚轮事件
-            $(hzy.settings.tabsContainer).parent().mousewheel(function (event) {
+            $(hzy.settings.tabsContainer).parent().mousewheel(function(event) {
                 if (event.deltaY === 1)
                     hzy.tabs.goRight();
                 else
@@ -207,7 +219,7 @@ var hzy = {
                 // console.log(event.deltaX, event.deltaY, event.deltaFactor);
             });
         },
-        setTabDomInit: function () {
+        setTabDomInit: function() {
             //设置选项卡dom元素初始值
             hzy.tabs.liTotalWidth = $(hzy.settings.tabsContainer + ' li:eq(0)').width();
             var _w = hzy.tabs.liTotalWidth * $(hzy.settings.tabsContainer + ' li').length;
@@ -216,7 +228,7 @@ var hzy = {
             hzy.tabs.visualAreaWidth = $(hzy.settings.tabsContainer).parent().width();
         },
         //添加一个选项
-        add: function (obj) {
+        add: function(obj) {
             var _href = obj.href,
                 _text = obj.text;
             var _checkDom = $(hzy.settings.tabsContainer + ' li[hzy-router="#!' + _text + '#!' + _href + '"]');
@@ -230,25 +242,25 @@ var hzy = {
             hzy.tabs.setTabDomInit();
             hzy.tabs.location();
             //加载页面
-            hzy.loadPage(_href, function () {
+            hzy.loadPage(_href, function() {
                 hzy.menu.active(_text, _href);
             });
         },
-        goLeft: function (e) {
-            hzy.tabs.checkMove(function (_ul, moveVal) { //偏移量                
+        goLeft: function(e) {
+            hzy.tabs.checkMove(function(_ul, moveVal) { //偏移量                
                 var _lastLi = _ul.find('li:last');
                 var _checkVal = (hzy.tabs.initUlOffsetLeft + hzy.tabs.visualAreaWidth);
                 if (_lastLi.offset().left <= (_checkVal - hzy.tabs.liTotalWidth)) return;
                 hzy.tabs.move(moveVal, '-');
             });
         },
-        goRight: function (e) {
-            hzy.tabs.checkMove(function (_ul, moveVal) { //偏移量
+        goRight: function(e) {
+            hzy.tabs.checkMove(function(_ul, moveVal) { //偏移量
                 if (_ul.offset().left >= hzy.tabs.initUlOffsetLeft) return;
                 hzy.tabs.move(moveVal, '+');
             });
         },
-        checkLeftAndRight: function (_ul, now, operator, callback) {
+        checkLeftAndRight: function(_ul, now, operator, callback) {
             if (operator === '+' && now >= 0) { //如果是右移动
                 if (callback) callback();
                 _ul.stop();
@@ -261,7 +273,7 @@ var hzy = {
                 return;
             }
         },
-        checkMove: function (callback) {
+        checkMove: function(callback) {
             // 检查能否移动
             if (!hzy.tabs.leftAndRightLock) return;
             if (hzy.tabs.ulTotalWidth <= hzy.tabs.visualAreaWidth) return;
@@ -269,7 +281,7 @@ var hzy = {
             var _valli = hzy.tabs.liTotalWidth * 4;
             if (callback) callback(_ul, _valli);
         },
-        move: function (val, operator) {
+        move: function(val, operator) {
             //移动
             var _ul = $(hzy.settings.tabsContainer);
             hzy.tabs.leftAndRightLock = false;
@@ -277,16 +289,16 @@ var hzy = {
             _ul.animate({ "left": operator + '=' + val + "px" }, {
                 duration: hzy.tabs.moveSpeed,
                 easing: 'swing',
-                step: function (now, fx) {
+                step: function(now, fx) {
                     //操作每一帧
-                    hzy.tabs.checkLeftAndRight(_ul, now, operator, function () {
+                    hzy.tabs.checkLeftAndRight(_ul, now, operator, function() {
                         _record = true;
                     });
                 },
-                always: function () {
+                always: function() {
                     if (_record) {
                         //改邪归正
-                        setTimeout(function () {
+                        setTimeout(function() {
                             _ul.animate({ 'left': '0' }, 'normal');
                         }, 5);
                     }
@@ -294,9 +306,9 @@ var hzy = {
                 }
             });
         },
-        location: function () {
+        location: function() {
             //智能定位
-            hzy.tabs.checkMove(function (_ul, _valli) {
+            hzy.tabs.checkMove(function(_ul, _valli) {
                 var _activeLiOffsetLeft = _ul.find('li.selected').offset().left;
                 var _checkVal = (hzy.tabs.initUlOffsetLeft + hzy.tabs.visualAreaWidth); //可视区域偏移量
                 //如果菜单隐藏在右边 那么向左移动
@@ -312,7 +324,7 @@ var hzy = {
                 }
             });
         },
-        close: function (_this) {
+        close: function(_this) {
             //关闭
             _this = $(_this).parent();
             var obj = hzyRouter.analysisHash(_this.attr('hzy-router'));
@@ -322,10 +334,10 @@ var hzy = {
                 $(hzy.settings.pageContainer).find('iframe[src="' + obj.href + '"]').remove();
             }
         },
-        closeOther: function () {
+        closeOther: function() {
             //关闭其他
             var lis = $(hzy.settings.tabsContainer).find('li:gt(0)');
-            lis.each(function () {
+            lis.each(function() {
                 if (!$(this).hasClass('selected')) {
                     var obj = hzyRouter.analysisHash($(this).attr('hzy-router'));
                     if (hzy.settings.isIframe) { //如果iframe 模式
@@ -335,10 +347,10 @@ var hzy = {
                 }
             });
         },
-        closeAll: function () {
+        closeAll: function() {
             //关闭所有
             var lis = $(hzy.settings.tabsContainer).find('li:gt(0)');
-            lis.each(function () {
+            lis.each(function() {
                 var obj = hzyRouter.analysisHash($(this).attr('hzy-router'));
                 if (hzy.settings.isIframe) { //如果iframe 模式
                     $(hzy.settings.pageContainer).find('iframe[src="' + obj.href + '"]').remove();
@@ -348,31 +360,31 @@ var hzy = {
             lis.remove();
             $(hzy.settings.tabsContainer).find('li:eq(0)').click();
         },
-        refreshActive: function (_this) {
+        refreshActive: function(_this) {
             //刷新激活的选项卡
             var hash = top.window.location.hash;
             var arry = hash.split("#!");
-            hzy.loadPage(arry[2], function (_iframe) {
+            hzy.loadPage(arry[2], function(_iframe) {
                 if (hzy.settings.isIframe) _iframe.attr('src', arry[2]);
             });
         },
     },
     //监听iframe 对象加载完成
-    handleIframeLoadSuccess: function (iframe, callBack) {
+    handleIframeLoadSuccess: function(iframe, callBack) {
         if (iframe.attachEvent) {
             //todo something
             callBack();
         } else {
-            iframe.onload = function () {
+            iframe.onload = function() {
                 //todo something
                 callBack();
             }
         }
     },
     //全屏 类
-    fullScreen: function () {
+    fullScreen: function() {
         var isFullScreen = false;
-        var requestFullScreen = function () { //全屏
+        var requestFullScreen = function() { //全屏
             var de = document.documentElement;
             if (de.requestFullscreen) {
                 de.requestFullscreen();
@@ -385,7 +397,7 @@ var hzy = {
             }
         };
         //退出全屏 判断浏览器种类
-        var exitFull = function () {
+        var exitFull = function() {
             // 判断各种浏览器，找到正确的方法
             var exitMethod = document.exitFullscreen || //W3C
                 document.mozCancelFullScreen || //Chrome等
@@ -402,7 +414,7 @@ var hzy = {
         };
 
         return {
-            handleFullScreen: function ($this) {
+            handleFullScreen: function($this) {
                 $this = $($this);
                 if (isFullScreen) {
                     exitFull();

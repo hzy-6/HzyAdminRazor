@@ -37,14 +37,13 @@
     <script src="libs/jquery-mousewheel/jquery.mousewheel.min.js"></script>
     <script src="libs/bootstrap-master/dist/js/bootstrap.bundle.min.js"></script>
     <script src="libs/metismenu-master/metisMenu.min.js"></script>
-    <script src="~/admin/libs/sweetalert-master/sweetalert.min.js"></script>
     <script src="js/main.js"></script>
 </head>
 
 <body>
 
     <div class="hzy-container" id="hzy-container">
-        <header>
+        <header class="hzy-header-skin-blue">
             <div class="hzy-header-left">
                 <ul>
                     <!--fas fa-indent-->
@@ -228,18 +227,26 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">菜单颜色：</label>
+                            <label for="exampleInputEmail1">顶部颜色：</label>
                             <div class="row">
-                                <div class="col-sm-12 hzy-skin-default" onclick="hzy.menu.setSkin(hzy.menu.mSkin.default)"></div>
-                                <div class="col-sm-12 hzy-skin-white" onclick="hzy.menu.setSkin(hzy.menu.mSkin.white)"></div>
+                                <div class="col-sm-12 hzy-skin hzy-header-skin-blue" onclick="hzy.header.setSkin('hzy-header-skin-blue')"></div>
+                                <div class="col-sm-12 hzy-skin hzy-header-skin-white" onclick="hzy.header.setSkin('hzy-header-skin-white')"></div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">左侧菜单颜色：</label>
+                            <div class="row">
+                                <div class="col-sm-12 hzy-skin hzy-skin-default" onclick="hzy.menu.setSkin(hzy.menu.mSkin.default)"></div>
+                                <div class="col-sm-12 hzy-skin hzy-skin-white" onclick="hzy.menu.setSkin(hzy.menu.mSkin.white)"></div>
                             </div>
 
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <!-- <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-block" data-dismiss="modal">  关闭 </button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

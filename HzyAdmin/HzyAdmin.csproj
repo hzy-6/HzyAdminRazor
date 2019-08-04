@@ -29,6 +29,9 @@
 
 
   <ItemGroup>
+    <None Include="wwwroot\admin\hzyAdminUI\js\coordtransform.js" />
+    <None Include="wwwroot\admin\hzyAdminUI\js\main.js" />
+    <None Include="wwwroot\admin\hzyAdminUI\js\router.js" />
     <None Include="wwwroot\admin\libs\neditor\net\net.sln" />
   </ItemGroup>
 
