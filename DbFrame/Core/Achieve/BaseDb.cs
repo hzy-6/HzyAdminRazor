@@ -44,7 +44,7 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Entitys"></param>
         /// <returns></returns>
-        public override IEnumerable<object> Insert<T>(IEnumerable<T> Entitys)
+        public override IEnumerable<object> InsertBatch<T>(IEnumerable<T> Entitys)
         {
             var Keys = new List<object>();
             foreach (var item in Entitys) Keys.Add(this.Insert(item));
@@ -81,7 +81,7 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Entitys"></param>
         /// <returns></returns>
-        public override async Task<IEnumerable<object>> InsertAsync<T>(IEnumerable<T> Entitys)
+        public override async Task<IEnumerable<object>> InsertBatchAsync<T>(IEnumerable<T> Entitys)
         {
             var Keys = new List<object>();
             foreach (var item in Entitys) Keys.Add(await this.InsertAsync(item));

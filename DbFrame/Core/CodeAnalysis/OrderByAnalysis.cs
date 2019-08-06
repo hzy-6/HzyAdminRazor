@@ -81,7 +81,7 @@ namespace DbFrame.Core.CodeAnalysis
         {
             var _MethodName = node.Method.Name;
 
-            if (_MethodName == "SqlStr")
+            if (_MethodName == nameof(DbMappingExtension.SqlStr))
             {
                 var _Arguments1 = node.Arguments[0];
                 var _Arguments2 = node.Arguments[1];
