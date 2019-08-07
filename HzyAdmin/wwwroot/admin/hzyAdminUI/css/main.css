@@ -345,6 +345,9 @@ a {
 
 
 /*****nav Start*****/
+.metismenu {
+    margin-top: 1.2rem;
+}
 
 .sidebar-nav {
     background: #001529;
