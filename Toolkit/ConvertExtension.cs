@@ -15,14 +15,9 @@ namespace Toolkit
         /// <returns></returns>
         public static string ToStr<T>(this T value)
         {
-            try
-            {
-                return value.ToString();
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
+            if (value == null) return string.Empty;
+
+            return value.ToString();
         }
 
         /// <summary>
@@ -222,14 +217,9 @@ namespace Toolkit
         /// <returns></returns>
         public static byte[] ToBytes<T>(this T value)
         {
-            try
-            {
-                return value as byte[];
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            if (value == null) return null;
+
+            return value as byte[];
         }
 
         /// <summary>
