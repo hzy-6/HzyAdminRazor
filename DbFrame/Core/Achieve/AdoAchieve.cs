@@ -116,9 +116,14 @@ namespace DbFrame.Core.Achieve
             using (var conn = this.GetDbConnection()) return conn.Query<T>(sql, param, transaction, buffered, commandTimeout, commandType);
         }
 
-        public override IDataReader ExecuteReader(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        public override IDataReader ExecuteReader(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, Action<IDataReader> Success = null)
         {
-            using (var conn = this.GetDbConnection()) return conn.ExecuteReader(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection())
+            {
+                var _IDataReader = conn.ExecuteReader(sql, param, transaction, commandTimeout, commandType);
+                Success?.Invoke(_IDataReader);
+                return _IDataReader;
+            }
         }
 
         public override DataTable QueryDataTable(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)

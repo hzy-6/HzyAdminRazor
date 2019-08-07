@@ -69,10 +69,12 @@ namespace Logic.Class
             _DynamicParameters.Add("@PAGECOUNT", 0, DbType.Int32, ParameterDirection.Output);
             _DynamicParameters.Add("@RECORDCOUNT", 0, DbType.Int32, ParameterDirection.Output);
 
-            var _IDataReader = db.ExecuteReader("PROC_SPLITPAGE", _DynamicParameters, null, 30, CommandType.StoredProcedure);
             //将 IDataReader 对象转换为 DataSet 
             DataSet _DataSet = new AdoExtend.HZYDataSet();
-            _DataSet.Load(_IDataReader, LoadOption.OverwriteChanges, null, new DataTable[] { });
+            db.ExecuteReader("PROC_SPLITPAGE", _DynamicParameters, null, 30, CommandType.StoredProcedure, (_IDataReader) =>
+            {
+                _DataSet.Load(_IDataReader, LoadOption.OverwriteChanges, null, new DataTable[] { });
+            });
 
             if (_DataSet.Tables.Count == 2)
             {

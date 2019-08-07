@@ -485,9 +485,9 @@ namespace DbFrame.Core.Achieve
         {
             return this.Ado.Query<T>(sql, param, transaction, buffered, commandTimeout, commandType);
         }
-        public override IDataReader ExecuteReader(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        public override IDataReader ExecuteReader(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, Action<IDataReader> Success = null)
         {
-            return this.Ado.ExecuteReader(sql, param, transaction, commandTimeout, commandType);
+            return this.Ado.ExecuteReader(sql, param, transaction, commandTimeout, commandType, Success);
         }
         public override DataTable QueryDataTable(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
