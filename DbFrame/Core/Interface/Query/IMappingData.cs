@@ -11,13 +11,13 @@ namespace DbFrame.Core.Interface.Query
 
     public interface IMappingData
     {
-        TReturn Frist<TReturn>();
+        TReturn First<TReturn>();
         List<TReturn> ToList<TReturn>();
         DataTable ToTable();
         int Count();
 
         #region Async
-        Task<TReturn> FristAsync<TReturn>();
+        Task<TReturn> FirstAsync<TReturn>();
         Task<List<TReturn>> ToListAsync<TReturn>();
         Task<DataTable> ToTableAsync();
         Task<int> CountAsync();
@@ -35,11 +35,11 @@ namespace DbFrame.Core.Interface.Query
 
     public interface IMappingData<T> : IMappingData
     {
-        T Frist();
+        T First();
         List<T> ToList();
 
         #region Async
-        Task<T> FristAsync();
+        Task<T> FirstAsync();
         Task<List<T>> ToListAsync();
         #endregion
 

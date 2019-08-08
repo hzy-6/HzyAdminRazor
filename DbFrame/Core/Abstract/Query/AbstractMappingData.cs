@@ -11,10 +11,10 @@ namespace DbFrame.Core.Abstract.Query
 
     public abstract class AbstractMappingData<T> : AbstractBase, IMappingData<T>
     {
-        public abstract T Frist();
+        public abstract T First();
         public abstract List<T> ToList();
 
-        public abstract TReturn Frist<TReturn>();
+        public abstract TReturn First<TReturn>();
         public abstract List<TReturn> ToList<TReturn>();
         public abstract DataTable ToTable();
         public abstract int Count();
@@ -28,9 +28,9 @@ namespace DbFrame.Core.Abstract.Query
         public abstract IMappingData ToSql(out SQL _SQL);
 
         #region Async
-        public abstract Task<T> FristAsync();
+        public abstract Task<T> FirstAsync();
         public abstract Task<List<T>> ToListAsync();
-        public abstract Task<TReturn> FristAsync<TReturn>();
+        public abstract Task<TReturn> FirstAsync<TReturn>();
         public abstract Task<List<TReturn>> ToListAsync<TReturn>();
         public abstract Task<DataTable> ToTableAsync();
         public abstract Task<int> CountAsync();

@@ -101,14 +101,14 @@ namespace DbFrame.Core.Achieve.Query
         {
             return this._MappingDataAchieve.Count();
         }
-        public override T Frist()
+        public override T First()
         {
-            return this._MappingDataAchieve.Frist();
+            return this._MappingDataAchieve.First();
         }
 
-        public override TReturn Frist<TReturn>()
+        public override TReturn First<TReturn>()
         {
-            return this._MappingDataAchieve.Frist<TReturn>();
+            return this._MappingDataAchieve.First<TReturn>();
         }
 
         public override TReturn Max<TReturn>(Expression<Func<HzyTuple<T>, TReturn>> Max)
@@ -187,14 +187,14 @@ namespace DbFrame.Core.Achieve.Query
         {
             return await this._MappingDataAchieve.CountAsync();
         }
-        public override async Task<T> FristAsync()
+        public override async Task<T> FirstAsync()
         {
-            return await this._MappingDataAchieve.FristAsync();
+            return await this._MappingDataAchieve.FirstAsync();
         }
 
-        public override async Task<TReturn> FristAsync<TReturn>()
+        public override async Task<TReturn> FirstAsync<TReturn>()
         {
-            return await this._MappingDataAchieve.FristAsync<TReturn>();
+            return await this._MappingDataAchieve.FirstAsync<TReturn>();
         }
 
         public override async Task<TReturn> MaxAsync<TReturn>(Expression<Func<HzyTuple<T>, TReturn>> Max)

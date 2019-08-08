@@ -398,7 +398,7 @@ namespace DbFrame.Core.Achieve
 
         public override T Find<T>(Expression<Func<HzyTuple<T>, bool>> Where)
         {
-            return this.Query<T>(Where).Frist<T>();
+            return this.Query<T>(Where).First<T>();
         }
 
         public override T FindById<T>(object Id)
@@ -411,7 +411,7 @@ namespace DbFrame.Core.Achieve
             var _ParName = typeof(T).Name.ToLower();
             var _KeyName = _KeyInfo.Name;
 
-            return this.Query<T>(Parser.WhereById<T>(_KeyName, Id, _ParName)).Frist<T>();
+            return this.Query<T>(Parser.WhereById<T>(_KeyName, Id, _ParName)).First<T>();
         }
 
         public override List<T> FindList<T>(Expression<Func<HzyTuple<T>, bool>> Where)
@@ -425,7 +425,7 @@ namespace DbFrame.Core.Achieve
 
         public override async Task<T> FindAsync<T>(Expression<Func<HzyTuple<T>, bool>> Where)
         {
-            return await this.Query<T>(Where).FristAsync<T>();
+            return await this.Query<T>(Where).FirstAsync<T>();
         }
 
         public override async Task<T> FindByIdAsync<T>(object Id)
@@ -438,7 +438,7 @@ namespace DbFrame.Core.Achieve
             var _ParName = typeof(T).Name.ToLower();
             var _KeyName = _KeyInfo.Name;
 
-            return await this.Query<T>(Parser.WhereById<T>(_KeyName, Id, _ParName)).FristAsync<T>();
+            return await this.Query<T>(Parser.WhereById<T>(_KeyName, Id, _ParName)).FirstAsync<T>();
         }
 
         public override async Task<List<T>> FindListAsync<T>(Expression<Func<HzyTuple<T>, bool>> Where)

@@ -27,12 +27,12 @@ namespace DbFrame.Core.Achieve.Query
             return this.analysis.Count(this.SqlCode);
         }
 
-        public override T Frist()
+        public override T First()
         {
-            return this.Frist<T>();
+            return this.First<T>();
         }
 
-        public override TReturn Frist<TReturn>()
+        public override TReturn First<TReturn>()
         {
             this.Top(1);
 
@@ -72,12 +72,12 @@ namespace DbFrame.Core.Achieve.Query
             return await this.analysis.CountAsync(this.SqlCode);
         }
 
-        public override async Task<T> FristAsync()
+        public override async Task<T> FirstAsync()
         {
-            return await this.FristAsync<T>();
+            return await this.FirstAsync<T>();
         }
 
-        public override async Task<TReturn> FristAsync<TReturn>()
+        public override async Task<TReturn> FirstAsync<TReturn>()
         {
             this.Top(1);
 
