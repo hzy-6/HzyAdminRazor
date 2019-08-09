@@ -81,12 +81,12 @@ var hzy = {
             _pageContainer.find('iframe').removeClass('hzy-iframe-active');
             var _iframe = _pageContainer.find('iframe[src="' + href + '"]');
             if (_iframe.length == 0) {
-                _pageContainer.parent().append(_loadHtml);
+                _pageContainer.prepend(_loadHtml);
                 _pageContainer.append(_temp);
                 _iframe = _pageContainer.find('iframe[src="' + href + '"]');
                 hzy.handleIframeLoadSuccess(_iframe[0], function() {
                     setTimeout(function() {
-                        _pageContainer.parent().find('.hzy-page-loader').remove();
+                        _pageContainer.find('.hzy-page-loader').remove();
                     }, 300);
                 });
             } else
@@ -97,12 +97,12 @@ var hzy = {
         //如果是非iframe 模式
         _pageContainer.empty();
         if (href.indexOf('http://') >= 0 || href.indexOf('https://') >= 0) {
-            _pageContainer.parent().append(_loadHtml);
+            _pageContainer.prepend(_loadHtml);
             _pageContainer.append(_temp);
             var _iframe = _pageContainer.find('iframe[src="' + href + '"]');
             hzy.handleIframeLoadSuccess(_iframe[0], function() {
                 setTimeout(function() {
-                    _pageContainer.parent().find('.hzy-page-loader').remove();
+                    _pageContainer.find('.hzy-page-loader').remove();
                 }, 300);
             });
             if (callback) callback();
@@ -114,12 +114,12 @@ var hzy = {
         } else {
             href += '?pt=tabs';
         }
-        _pageContainer.parent().append(_loadHtml);
+        _pageContainer.prepend(_loadHtml);
         _pageContainer.load(href, function(response, status, xhr) {
             //if (status === 'success') console.log('页面' + href + '加载成功!');
             if (callback) callback();
             setTimeout(function() {
-                _pageContainer.parent().find('.hzy-page-loader').remove();
+                _pageContainer.find('.hzy-page-loader').remove();
             }, 300);
         });
 
