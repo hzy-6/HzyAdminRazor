@@ -541,9 +541,9 @@ namespace DbFrame.Core.Achieve
         {
             return await this.Ado.QueryAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
-        public override async Task<IDataReader> ExecuteReaderAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        public override async Task<IDataReader> ExecuteReaderAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, Action<IDataReader> Success = null)
         {
-            return await this.Ado.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType);
+            return await this.Ado.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType, Success);
         }
         public override async Task<DataTable> QueryDataTableAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {

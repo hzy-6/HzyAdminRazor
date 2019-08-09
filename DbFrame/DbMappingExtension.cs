@@ -8,7 +8,6 @@ namespace DbFrame
     using System.Linq.Expressions;
     using System.Reflection;
     using DbFrame.BaseClass;
-    using Dapper;
     using System.Text;
 
     public static class DbMappingExtension
@@ -29,11 +28,38 @@ namespace DbFrame
             foreach (var item in list)
             {
                 string AttrName = item.Name;
-                foreach (DataColumn dc in dr.Table.Columns)
-                {
-                    if (AttrName != dc.ColumnName) continue;
-                    if (dr[dc.ColumnName] != DBNull.Value) item.SetValue(_Entity, dr[dc.ColumnName], null);
-                }
+                if (!dr.Table.Columns.Contains(AttrName)) continue;
+                if (dr[AttrName] == DBNull.Value) continue;
+                item.SetValue(_Entity, dr[AttrName], null);
+            }
+            return _Entity;
+        }
+
+        /// <summary>
+        /// IDataReader 转换 实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dr"></param>
+        /// <returns></returns>
+        public static T ToEntity<T>(this IDataReader _IDataReader) where T : class, new()
+        {
+            var _Entity = Parser.CreateInstance<T>();
+            var list = _Entity.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            if (list.Length == 0) throw new Exception("找不到任何 公共属性！");
+
+            List<string> field = new List<string>(_IDataReader.FieldCount);
+            for (int i = 0; i < _IDataReader.FieldCount; i++)
+            {
+                field.Add(_IDataReader.GetName(i));
+            }
+
+            foreach (var item in list)
+            {
+                string AttrName = item.Name;
+                if (!field.Contains(AttrName)) continue;
+                if (_IDataReader[AttrName] == DBNull.Value) continue;
+                item.SetValue(_Entity, _IDataReader[AttrName], null);
             }
             return _Entity;
         }
@@ -56,14 +82,9 @@ namespace DbFrame
                 foreach (var item in propertyInfo)
                 {
                     string AttrName = item.Name;
-                    foreach (DataColumn dc in dr.Table.Columns)
-                    {
-                        if (AttrName != dc.ColumnName) continue;
-                        if (dr[dc.ColumnName] != DBNull.Value)
-                            item.SetValue(_Entity, dr[dc.ColumnName], null);
-                        else
-                            item.SetValue(_Entity, null, null);
-                    }
+                    if (!dr.Table.Columns.Contains(AttrName)) continue;
+                    if (dr[AttrName] == DBNull.Value) continue;
+                    item.SetValue(_Entity, dr[AttrName], null);
                 }
                 list.Add(_Entity);
             }
@@ -75,7 +96,7 @@ namespace DbFrame
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
-        public static List<Dictionary<string, object>> ToList(this DataTable table)
+        public static List<Dictionary<string, object>> ToList(this DataTable table, string DateTimeStringFormat = "yyyy-MM-dd HH:mm", Action<Type, object> Success = null)
         {
             var list = new List<Dictionary<string, object>>();
             var dic = new Dictionary<string, object>();
@@ -84,21 +105,86 @@ namespace DbFrame
                 if (dic != null) dic = new Dictionary<string, object>();
                 foreach (DataColumn dc in table.Columns)
                 {
-                    if (dr[dc.ColumnName] == DBNull.Value)
-                    {
-                        dic.Add(dc.ColumnName, null);
-                    }
-                    else
-                    {
-                        if (dc.DataType == typeof(DateTime))
-                            dic.Add(dc.ColumnName, Convert.ToDateTime(dr[dc.ColumnName]).ToString("yyyy-MM-dd HH:mm:ss"));
-                        else
-                            dic.Add(dc.ColumnName, dr[dc.ColumnName]);
-                    }
+                    object value = null;
+                    if (dr[dc.ColumnName] != DBNull.Value)
+                        value = (dc.DataType == typeof(DateTime)) ? Convert.ToDateTime(dr[dc.ColumnName]).ToString(DateTimeStringFormat) : dr[dc.ColumnName];
+                    Success?.Invoke(dc.DataType, value);
+                    dic.Add(dc.ColumnName, value);
                 }
                 list.Add(dic);
             }
             return list;
+        }
+
+        #region IDataReader TO List<Dictionary<string, object>> And DataTable
+
+        /// <summary>
+        /// 将 IDataReader 对象转换为 List<T>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="_IDataReader"></param>
+        /// <returns></returns>
+        public static List<T> ToList<T>(this IDataReader _IDataReader)
+        {
+            if (_IDataReader.IsClosed) throw new DbFrameException("IDataReader 对象连接已关闭！");
+
+            var res = new List<T>();
+
+            var _Entity = Parser.CreateInstance<T>();
+            var propertyInfo = _Entity.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            List<string> field = new List<string>(_IDataReader.FieldCount);
+            for (int i = 0; i < _IDataReader.FieldCount; i++)
+            {
+                field.Add(_IDataReader.GetName(i));
+            }
+
+            while (_IDataReader.Read())
+            {
+                _Entity = Parser.CreateInstance<T>();
+                foreach (var item in propertyInfo)
+                {
+                    string AttrName = item.Name;
+                    if (!field.Contains(AttrName)) continue;
+                    if (_IDataReader[AttrName] == DBNull.Value) continue;
+                    item.SetValue(_Entity, _IDataReader[AttrName], null);
+                }
+                res.Add(_Entity);
+            }
+
+            return res;
+        }
+
+        /// <summary>
+        /// 将IDataReader对象转换为字典
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="_IDataReader"></param>
+        /// <returns></returns>
+        public static List<Dictionary<string, object>> ToList(this IDataReader _IDataReader)
+        {
+            if (_IDataReader.IsClosed) throw new DbFrameException("IDataReader 对象连接已关闭！");
+
+            var res = new List<Dictionary<string, object>>();
+
+            List<string> field = new List<string>(_IDataReader.FieldCount);
+            for (int i = 0; i < _IDataReader.FieldCount; i++)
+            {
+                field.Add(_IDataReader.GetName(i));
+            }
+
+            while (_IDataReader.Read())
+            {
+                var dic = new Dictionary<string, object>();
+                foreach (var item in field)
+                {
+                    dic[item] = (_IDataReader[item] == DBNull.Value) ? null : _IDataReader[item];
+                }
+
+                res.Add(dic);
+            }
+
+            return res;
         }
 
         /// <summary>
@@ -113,12 +199,16 @@ namespace DbFrame
             return dt;
         }
 
+        #endregion
+
+
+
         /// <summary>
         /// 将匿名对象转换为字典
         /// </summary>
         /// <param name="Attribute"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ToDictionary<T>(this T Attribute) where T : class, new()
+        public static Dictionary<string, object> ToDic<T>(this T Attribute) where T : class, new()
         {
             var di = new Dictionary<string, object>();
 

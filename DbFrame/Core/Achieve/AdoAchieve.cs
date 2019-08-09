@@ -111,8 +111,17 @@ namespace DbFrame.Core.Achieve
 
         public override IEnumerable<T> Query<T>(string sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (typeof(T).Name == new Dictionary<string, object>().GetType().Name)
-                return (IEnumerable<T>)(this.QueryDataTable(sql, param, transaction, commandTimeout, commandType).ToList());
+            if (typeof(T) == typeof(Dictionary<string, object>) | typeof(T) == typeof(IDictionary<string, object>))
+            {
+                var res = new List<Dictionary<string, object>>();
+                this.ExecuteReader(sql, param, transaction, commandTimeout, commandType, (_IDataReader) =>
+                {
+                    res = _IDataReader.ToList();
+                });
+
+                return (IEnumerable<T>)res;
+            }
+
             using (var conn = this.GetDbConnection()) return conn.Query<T>(sql, param, transaction, buffered, commandTimeout, commandType);
         }
 
@@ -173,14 +182,27 @@ namespace DbFrame.Core.Achieve
 
         public override async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            if (typeof(T).Name == new Dictionary<string, object>().GetType().Name)
-                return (IEnumerable<T>)((await this.QueryDataTableAsync(sql, param, transaction, commandTimeout, commandType)).ToList());
+            if (typeof(T) == typeof(Dictionary<string, object>) | typeof(T) == typeof(IDictionary<string, object>))
+            {
+                var res = new List<Dictionary<string, object>>();
+                await this.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType, (_IDataReader) =>
+                {
+                    res = _IDataReader.ToList();
+                });
+
+                return (IEnumerable<T>)res;
+            }
             using (var conn = this.GetDbConnection()) return await conn.QueryAsync<T>(sql, param, transaction, commandTimeout, commandType);
         }
 
-        public override async Task<IDataReader> ExecuteReaderAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        public override async Task<IDataReader> ExecuteReaderAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null, Action<IDataReader> Success = null)
         {
-            using (var conn = this.GetDbConnection()) return await conn.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType);
+            using (var conn = this.GetDbConnection())
+            {
+                var _IDataReader = await conn.ExecuteReaderAsync(sql, param, transaction, commandTimeout, commandType);
+                Success?.Invoke(_IDataReader);
+                return _IDataReader;
+            }
         }
 
         public override async Task<DataTable> QueryDataTableAsync(string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
