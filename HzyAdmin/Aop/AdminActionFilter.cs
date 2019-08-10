@@ -14,7 +14,7 @@ namespace Aop
     /// <summary>
     /// 检查session 
     /// </summary>
-    public class AdminActionFilter: ActionFilterAttribute
+    public class AdminActionFilter : ActionFilterAttribute
     {
         /// <summary>
         /// 忽略特性
@@ -113,7 +113,7 @@ namespace Aop
                             _func_list.ForEach(item =>
                             {
                                 var ispower = _role_menu_func_list.Any(w =>
-                                w.RoleMenuFunction_RoleID == _Controller._Account.RoleID &&
+                                _Controller._Account.RoleIDList.Contains(w.RoleMenuFunction_RoleID.ToGuid()) &&
                                 w.RoleMenuFunction_MenuID == _Menu.Menu_ID &&
                                 w.RoleMenuFunction_FunctionID == item.Function_ID);
                                 _power_list.Add(item.Function_ByName, ispower);

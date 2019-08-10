@@ -53,9 +53,9 @@ namespace HzyAdmin.Areas.Admin.Controllers.Sys
         #region 保存、删除
 
         [HttpPost, Aop.AopCheckEntityFilter]
-        public IActionResult Save(Sys_User model, string Role_ID)
+        public IActionResult Save(Sys_User model, List<Sys_UserRole> Sys_UserRoleList)
         {
-            this.FormKey = _Logic.Save(model, new Sys_UserRole() { UserRole_RoleID = Role_ID.ToGuid() });
+            this.FormKey = _Logic.Save(model, Sys_UserRoleList);
             return this.Success(new { status = 1, formKey = this.FormKey });
         }
 

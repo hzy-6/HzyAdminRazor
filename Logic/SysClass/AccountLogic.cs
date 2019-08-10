@@ -43,15 +43,14 @@ namespace Logic.SysClass
             //    throw new MessageBox("验证码不正确");
 
             var _Account = new Account();
-            var _Sys_UserRole = await db.FindAsync<Sys_UserRole>(w => w.t1.UserRole_UserID == _Sys_User.User_ID);
-            var _Sys_Role = await db.FindByIdAsync<Sys_Role>(_Sys_UserRole.UserRole_RoleID);
+            var _Sys_UserRole = await db.Query<Sys_UserRole>(w => w.t1.UserRole_UserID == _Sys_User.User_ID).ToListAsync();
             //
-            _Account.RoleID = _Sys_Role.Role_ID.ToGuid();
+            _Account.RoleIDList = _Sys_UserRole.Select(w => w.UserRole_RoleID.ToGuid()).ToList();
             _Account.UserID = _Sys_User.User_ID.ToGuid();
             _Account.UserName = _Sys_User.User_Name;
             _Account._Sys_User = _Sys_User;
             //如果是超级管理员 帐户
-            _Account.IsSuperManage = _Sys_Role.Role_ID == AppConfig.Admin_RoleID.ToGuid();
+            _Account.IsSuperManage = _Sys_UserRole.Any(w => w.UserRole_RoleID == AppConfig.Admin_RoleID.ToGuid());
             Tools.SetSession("Account", _Account);
             return _Account;
         }

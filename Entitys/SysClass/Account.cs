@@ -13,7 +13,7 @@ namespace Entitys.SysClass
         /// <summary>
         /// 角色ID
         /// </summary>
-        public Guid RoleID { get; set; }
+        public List<Guid> RoleIDList { get; set; }
         /// <summary>
         /// 用户ID
         /// </summary>
