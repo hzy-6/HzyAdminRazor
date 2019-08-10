@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DbFrame.BaseClass
+﻿namespace DbFrame.BaseClass
 {
 
     public class HzyTuple

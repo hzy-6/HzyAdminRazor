@@ -71,7 +71,7 @@ namespace Logic
                 }
                 else
                 {
-                    if (!db.UpdateById(model)) throw new MessageBox(this.ErrorMessage);
+                    if (db.UpdateById(model)==0) throw new MessageBox(this.ErrorMessage);
                 }
             });
 
