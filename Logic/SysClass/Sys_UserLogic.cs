@@ -80,8 +80,12 @@ namespace Logic.SysClass
                 if (Sys_UserRoleList.Count > 0)
                 {
                     db.Delete<Sys_UserRole>(w => w.t1.UserRole_UserID == model.User_ID);
-                    var Ids = db.InsertBatch(Sys_UserRoleList);
-                    if (Ids.Count() != Sys_UserRoleList.Count) throw new MessageBox(this.ErrorMessage);
+                    foreach (var item in Sys_UserRoleList)
+                    {
+                        item.UserRole_UserID = model.User_ID;
+                        item.UserRole_ID = db.Insert(item).ToGuid();
+                        if (item.UserRole_ID == Guid.Empty) throw new MessageBox(this.ErrorMessage);
+                    }
                 }
 
             });
