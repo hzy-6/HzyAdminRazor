@@ -28,6 +28,7 @@ namespace Logic.SysClass
             await db.CommitAsync(async () =>
             {
                 await db.DeleteAsync<Sys_RoleMenuFunction>(w => w.t1.RoleMenuFunction_RoleID == RoleId);
+                if (Sys_RoleMenuFunction_List.Count == 0) return;
                 foreach (var item in Sys_RoleMenuFunction_List)
                 {
                     await db.InsertAsync(item);
