@@ -23,10 +23,17 @@ namespace DbFrame.Core.Achieve
             this.LastInsertId = _LastInsertId;
         }
 
+        public override IInsert<T> Execute(List<SQL> SqlContainer, out object Id)
+        {
+            this.ToSql(out object _KeyId);
+            Id = _KeyId;
+            SqlContainer.Add(this.Sql);
+            return this;
+        }
+
         public override object Execute()
         {
-            object _KeyId = null;
-            this.ToSql((Id) => _KeyId = Id);
+            this.ToSql(out object _KeyId);
             object _ResKeyId = null;
 
             //如果开启了 Commit 状态
@@ -42,8 +49,7 @@ namespace DbFrame.Core.Achieve
 
         public override Task<object> ExecuteAsync()
         {
-            object _KeyId = null;
-            this.ToSql((Id) => _KeyId = Id);
+            this.ToSql(out object _KeyId);
             object _ResKeyId = null;
 
             //如果开启了 Commit 状态
@@ -71,7 +77,7 @@ namespace DbFrame.Core.Achieve
             return this;
         }
 
-        public override SQL ToSql(Action<object> CallBack = null)
+        public override SQL ToSql(out object Id)
         {
             var _Cols = new List<string>();
             var _Values = new List<string>();
@@ -160,7 +166,7 @@ namespace DbFrame.Core.Achieve
 
             this.Sql.Code.Append($"INSERT INTO {TableName} ({string.Join(",", _Cols)}) VALUES ({ string.Join(",", _Values)}) {LastInsertId} ;");
 
-            CallBack?.Invoke(_KeyId);
+            Id = _KeyId;
 
             return this.Sql;
         }

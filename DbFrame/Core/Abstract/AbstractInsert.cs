@@ -20,10 +20,11 @@ namespace DbFrame.Core.Abstract
             this.memberInitExpression = _MemberInitExpression;
         }
 
+        public abstract IInsert<T> Execute(List<SQL> SqlContainer, out object Id);
         public abstract object Execute();
         public abstract Task<object> ExecuteAsync();
         public abstract IInsert<T> IgnoreCols(Expression<Func<T, dynamic>> IgnoreColumns);
         public abstract IInsert<T> IgnoreColsIF(bool IF, Expression<Func<T, dynamic>> IgnoreColumns);
-        public abstract SQL ToSql(Action<object> CallBack);
+        public abstract SQL ToSql(out object Id);
     }
 }

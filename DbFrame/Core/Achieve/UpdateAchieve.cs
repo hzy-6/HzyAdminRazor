@@ -19,6 +19,13 @@ namespace DbFrame.Core.Achieve
 
         }
 
+        public override IUpdate<T> Execute(List<SQL> SqlContainer)
+        {
+            this.ToSql();
+            SqlContainer.Add(this.Sql);
+            return this;
+        }
+
         public override int Execute()
         {
             this.ToSql();

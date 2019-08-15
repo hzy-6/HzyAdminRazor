@@ -19,6 +19,7 @@ namespace DbFrame.Core.Abstract
 
         }
 
+        public abstract IDelete<T> Execute(List<SQL> SqlContainer);
         public abstract int Execute();
         public abstract Task<int> ExecuteAsync();
         public abstract IDelete<T> Where(Expression<Func<HzyTuple<T>, bool>> Where);
