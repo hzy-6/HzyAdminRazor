@@ -53,7 +53,7 @@ where a.TABLE_NAME='" + table + "' ";
             return db.Query<string>(SqlString).ToList();
         }
 
-        public void Save(string Type, string Url, string Template, string Str, bool IsCreateAll, string TableName)
+        public async Task Save(string Type, string Url, string Template, string Str, bool IsCreateAll, string TableName)
         {
 
             //if (System.IO.Directory.Exists(Url + "\\Model"))
@@ -75,102 +75,108 @@ where a.TABLE_NAME='" + table + "' ";
             //    //System.IO.Directory.Delete(Url + "\\");
             //}
 
-            switch (Type)
+            await Task.Run(() =>
             {
-                case "Model":
-                    Url = (Url + "\\Model");
-                    Template = Template + "Model\\Model.txt";
-                    Str = string.IsNullOrEmpty(Str.ToStr()) ? "" : Str.ToStr();
-                    var _Content = this.GetContent(Template, Url);
-                    if (IsCreateAll)
-                    {
-                        foreach (var item in this.GetAllTable())
+                switch (Type)
+                {
+                    case "Model":
+                        Url = (Url + "\\Model");
+                        Template = Template + "Model\\Model.txt";
+                        Str = string.IsNullOrEmpty(Str.ToStr()) ? "" : Str.ToStr();
+                        var _Content = this.GetContent(Template, Url);
+                        if (IsCreateAll)
                         {
-                            this.CreateModel(_Content, Url, Str, item);
+                            foreach (var item in this.GetAllTable())
+                            {
+                                this.CreateModel(_Content, Url, Str, item);
+                            }
                         }
-                    }
-                    else
-                    {
-                        this.CreateModel(_Content, Url, Str, TableName);
-                    }
-                    break;
-                case "Logic":
-                    Url = (Url + "\\Logic");
-                    Template = Template + "Logic\\Logic.txt";
-                    Str = string.IsNullOrEmpty(Str.ToStr()) ? "Logic" : Str.ToStr();
-                    _Content = this.GetContent(Template, Url);
-                    if (IsCreateAll)
-                    {
-                        foreach (var item in this.GetAllTable())
+                        else
                         {
-                            this.CreateLogic(_Content, Url, Str, item);
+                            this.CreateModel(_Content, Url, Str, TableName);
                         }
-                    }
-                    else
-                    {
-                        this.CreateLogic(_Content, Url, Str, TableName);
-                    }
-                    break;
-                case "ViewsControllers":
-                    //Controller
-                    var _Url = (Url + "\\ViewsControllers");
-                    var _Template = Template + "ViewsControllers\\Controllers.txt";
-                    var _Str = string.IsNullOrEmpty(Str.ToStr()) ? "Controller" : Str.ToStr();
-                    _Content = this.GetContent(_Template, _Url);
-
-                    if (IsCreateAll)
-                    {
-                        foreach (var item in this.GetAllTable())
+                        break;
+                    case "Logic":
+                        Url = (Url + "\\Logic");
+                        Template = Template + "Logic\\Logic.txt";
+                        Str = string.IsNullOrEmpty(Str.ToStr()) ? "Logic" : Str.ToStr();
+                        _Content = this.GetContent(Template, Url);
+                        if (IsCreateAll)
                         {
-                            this.CreateControllers(_Content, _Url, _Str, item);
+                            foreach (var item in this.GetAllTable())
+                            {
+                                this.CreateLogic(_Content, Url, Str, item);
+                            }
                         }
-                    }
-                    else
-                    {
-                        this.CreateControllers(_Content, _Url, _Str, TableName);
-                    }
-
-                    //Index.cshtml
-                    _Url = (Url + "\\ViewsControllers");
-                    _Template = Template + "ViewsControllers\\Index.txt";
-                    _Str = string.IsNullOrEmpty(Str.ToStr()) ? "" : Str.ToStr();
-                    _Content = this.GetContent(_Template, _Url);
-
-                    if (IsCreateAll)
-                    {
-                        foreach (var item in this.GetAllTable())
+                        else
                         {
-                            this.CreateViews(_Content, _Url, _Str, item, "Index");
+                            this.CreateLogic(_Content, Url, Str, TableName);
                         }
-                    }
-                    else
-                    {
-                        this.CreateViews(_Content, _Url, _Str, TableName, "Index");
-                    }
+                        break;
+                    case "ViewsControllers":
+                        //Controller
+                        var _Url = (Url + "\\ViewsControllers");
+                        var _Template = Template + "ViewsControllers\\Controllers.txt";
+                        var _Str = string.IsNullOrEmpty(Str.ToStr()) ? "Controller" : Str.ToStr();
+                        _Content = this.GetContent(_Template, _Url);
 
-                    //Info.cshtml
-                    _Url = (Url + "\\ViewsControllers");
-                    _Template = Template + "ViewsControllers\\Info.txt";
-                    _Str = string.IsNullOrEmpty(Str.ToStr()) ? "" : Str.ToStr();
-                    _Content = this.GetContent(_Template, _Url);
-
-                    if (IsCreateAll)
-                    {
-                        foreach (var item in this.GetAllTable())
+                        if (IsCreateAll)
                         {
-                            this.CreateViews(_Content, _Url, _Str, item, "Info");
+                            foreach (var item in this.GetAllTable())
+                            {
+                                this.CreateControllers(_Content, _Url, _Str, item);
+                            }
                         }
-                    }
-                    else
-                    {
-                        this.CreateViews(_Content, _Url, _Str, TableName, "Info");
-                    }
+                        else
+                        {
+                            this.CreateControllers(_Content, _Url, _Str, TableName);
+                        }
+
+                        //Index.cshtml
+                        _Url = (Url + "\\ViewsControllers");
+                        _Template = Template + "ViewsControllers\\Index.txt";
+                        _Str = string.IsNullOrEmpty(Str.ToStr()) ? "" : Str.ToStr();
+                        _Content = this.GetContent(_Template, _Url);
+
+                        if (IsCreateAll)
+                        {
+                            foreach (var item in this.GetAllTable())
+                            {
+                                this.CreateViews(_Content, _Url, _Str, item, "Index");
+                            }
+                        }
+                        else
+                        {
+                            this.CreateViews(_Content, _Url, _Str, TableName, "Index");
+                        }
+
+                        //Info.cshtml
+                        _Url = (Url + "\\ViewsControllers");
+                        _Template = Template + "ViewsControllers\\Info.txt";
+                        _Str = string.IsNullOrEmpty(Str.ToStr()) ? "" : Str.ToStr();
+                        _Content = this.GetContent(_Template, _Url);
+
+                        if (IsCreateAll)
+                        {
+                            foreach (var item in this.GetAllTable())
+                            {
+                                this.CreateViews(_Content, _Url, _Str, item, "Info");
+                            }
+                        }
+                        else
+                        {
+                            this.CreateViews(_Content, _Url, _Str, TableName, "Info");
+                        }
 
 
-                    break;
-                default:
-                    break;
-            }
+                        break;
+                    default:
+                        break;
+                }
+
+            });
+
+
         }
 
         private void CreateModel(string Content, string Url, string Str, string TableName)
@@ -234,8 +240,9 @@ where a.TABLE_NAME='" + table + "' ";
             }
 
             Content = Content.Replace("<#Filds#>", _StringBuilder.ToString());
-
-            System.IO.File.WriteAllText(Url + "\\" + ClassName + ".cs", Content, Encoding.UTF8);
+            var _Path = Url + "\\" + ClassName + ".cs";
+            if (System.IO.File.Exists(_Path)) System.IO.File.Delete(_Path);
+            System.IO.File.WriteAllText(_Path, Content, Encoding.UTF8);
         }
 
         private void CreateLogic(string Content, string Url, string Str, string TableName)
@@ -252,8 +259,9 @@ where a.TABLE_NAME='" + table + "' ";
             }
 
             Content = Content.Replace("<#KeyName#>", KeyName.COLUMN_NAME);
-
-            System.IO.File.WriteAllText(Url + "\\" + ClassName + ".cs", Content, Encoding.UTF8);
+            var _Path = Url + "\\" + ClassName + ".cs";
+            if (System.IO.File.Exists(_Path)) System.IO.File.Delete(_Path);
+            System.IO.File.WriteAllText(_Path, Content, Encoding.UTF8);
         }
 
         private void CreateControllers(string Content, string Url, string Str, string TableName)
@@ -270,8 +278,9 @@ where a.TABLE_NAME='" + table + "' ";
             }
 
             Content = Content.Replace("<#KeyName#>", KeyName.COLUMN_NAME);
-
-            System.IO.File.WriteAllText(Url + "\\" + ClassName + ".cs", Content, Encoding.UTF8);
+            var _Path = Url + "\\" + ClassName + ".cs";
+            if (System.IO.File.Exists(_Path)) System.IO.File.Delete(_Path);
+            System.IO.File.WriteAllText(_Path, Content, Encoding.UTF8);
         }
 
         private void CreateViews(string Content, string Url, string Str, string TableName, string FileName)
@@ -295,13 +304,15 @@ where a.TABLE_NAME='" + table + "' ";
             {
                 System.IO.Directory.CreateDirectory(_File);
             }
-
+            var _Path = _File + "\\" + FileName + ".cshtml";
+            if (System.IO.File.Exists(_Path)) System.IO.File.Delete(_Path);
             System.IO.File.WriteAllText(_File + "\\" + FileName + ".cshtml", Content, Encoding.UTF8);
         }
 
 
         private string GetContent(string TempUrl, string Url)
         {
+            if (System.IO.Directory.Exists(Url)) System.IO.Directory.Delete(Url, true);
 
             System.IO.Directory.CreateDirectory(Url);
 
