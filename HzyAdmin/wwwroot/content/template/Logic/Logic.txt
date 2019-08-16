@@ -13,7 +13,7 @@ namespace Logic
 	using Entitys;
 	using DbFrame;
 
-    public class <#ClassName#> : BaseLogic<<#TableName#>>
+    public class <#ClassName#> : BaseLogic
     {
         #region  增、删、改、查
 
