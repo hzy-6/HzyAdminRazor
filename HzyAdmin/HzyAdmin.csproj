@@ -11,6 +11,13 @@
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\content\createFile\**" />
+    <Content Remove="wwwroot\content\createFile\**" />
+    <EmbeddedResource Remove="wwwroot\content\createFile\**" />
+    <None Remove="wwwroot\content\createFile\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -39,8 +46,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\admin\images\" />
     <Folder Include="wwwroot\admin\libs\neditor\net\upload\image\" />
-    <Folder Include="wwwroot\content\createFile\Logic\" />
-    <Folder Include="wwwroot\content\createFile\Model\" />
     <Folder Include="wwwroot\content\upFile\" />
   </ItemGroup>
 

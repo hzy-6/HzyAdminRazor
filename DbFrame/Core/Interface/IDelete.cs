@@ -11,7 +11,7 @@ namespace DbFrame.Core.Interface
 
     public interface IDelete<T>
     {
-
+        IDelete<T> Execute(List<SQL> SqlContainer);
         int Execute();
         Task<int> ExecuteAsync();
         IDelete<T> Where(Expression<Func<HzyTuple<T>, bool>> Where);

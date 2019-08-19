@@ -7,7 +7,6 @@ namespace DbFrame.Core.Abstract
     using DbFrame.BaseClass;
     using DbFrame.Core.CodeAnalysis;
     using DbFrame.Core.Interface;
-    using System.Data;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
@@ -20,6 +19,7 @@ namespace DbFrame.Core.Abstract
             this.memberInitExpression = _MemberInitExpression;
         }
 
+        public abstract IUpdate<T> Execute(List<SQL> SqlContainer);
         public abstract int Execute();
         public abstract Task<int> ExecuteAsync();
         public abstract IUpdate<T> IgnoreCols(Expression<Func<T, dynamic>> IgnoreColumns);

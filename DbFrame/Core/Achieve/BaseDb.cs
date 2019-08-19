@@ -147,10 +147,10 @@ namespace DbFrame.Core.Achieve
         /// <param name="Entity"></param>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override bool Update<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where)
+        public override int Update<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _IUpdate = this.UpdateObject(Entity).Where(Where);
-            return _IUpdate.Execute() > 0;
+            return _IUpdate.Execute();
         }
 
         /// <summary>
@@ -160,10 +160,10 @@ namespace DbFrame.Core.Achieve
         /// <param name="Entity"></param>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override bool Update<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
+        public override int Update<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _IUpdate = this.UpdateObject(Entity).Where(Where);
-            return _IUpdate.Execute() > 0;
+            return _IUpdate.Execute();
         }
 
         /// <summary>
@@ -173,10 +173,10 @@ namespace DbFrame.Core.Achieve
         /// <param name="Entity"></param>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override bool Update<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
+        public override int Update<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _IUpdate = this.UpdateObject(Entity).Where(Where);
-            return _IUpdate.Execute() > 0;
+            return _IUpdate.Execute();
         }
 
         /// <summary>
@@ -185,10 +185,10 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public override bool UpdateById<T>(T Entity)
+        public override int UpdateById<T>(T Entity)
         {
             var _IUpdate = this.UpdateObjectById(Entity);
-            return _IUpdate.Execute() > 0;
+            return _IUpdate.Execute();
         }
 
         /// <summary>
@@ -198,10 +198,10 @@ namespace DbFrame.Core.Achieve
         /// <param name="Entity"></param>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override async Task<bool> UpdateAsync<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where)
+        public override async Task<int> UpdateAsync<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _IUpdate = this.UpdateObject(Entity).Where(Where);
-            return (await _IUpdate.ExecuteAsync()) > 0;
+            return (await _IUpdate.ExecuteAsync());
         }
 
         /// <summary>
@@ -211,10 +211,10 @@ namespace DbFrame.Core.Achieve
         /// <param name="Entity"></param>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override async Task<bool> UpdateAsync<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
+        public override async Task<int> UpdateAsync<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _IUpdate = this.UpdateObject(Entity).Where(Where);
-            return (await _IUpdate.ExecuteAsync()) > 0;
+            return (await _IUpdate.ExecuteAsync());
         }
 
         /// <summary>
@@ -224,10 +224,10 @@ namespace DbFrame.Core.Achieve
         /// <param name="Entity"></param>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override async Task<bool> UpdateAsync<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
+        public override async Task<int> UpdateAsync<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _IUpdate = this.UpdateObject(Entity).Where(Where);
-            return (await _IUpdate.ExecuteAsync()) > 0;
+            return (await _IUpdate.ExecuteAsync());
         }
 
         /// <summary>
@@ -236,10 +236,10 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Entity"></param>
         /// <returns></returns>
-        public override async Task<bool> UpdateByIdAsync<T>(T Entity)
+        public override async Task<int> UpdateByIdAsync<T>(T Entity)
         {
             var _IUpdate = this.UpdateObjectById(Entity);
-            return (await _IUpdate.ExecuteAsync()) > 0;
+            return (await _IUpdate.ExecuteAsync());
         }
 
         /// <summary>
@@ -310,10 +310,10 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override bool Delete<T>(Expression<Func<HzyTuple<T>, bool>> Where)
+        public override int Delete<T>(Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _Delete = this.DeleteObject<T>().Where(Where);
-            return _Delete.Execute() > 0;
+            return _Delete.Execute();
         }
 
         /// <summary>
@@ -322,10 +322,10 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public override bool DeleteById<T>(object Id)
+        public override int DeleteById<T>(object Id)
         {
             var _Delete = this.DeleteByIdObject<T>(Id);
-            return _Delete.Execute() > 0;
+            return _Delete.Execute();
         }
 
         /// <summary>
@@ -334,10 +334,10 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Where"></param>
         /// <returns></returns>
-        public override async Task<bool> DeleteAsync<T>(Expression<Func<HzyTuple<T>, bool>> Where)
+        public override async Task<int> DeleteAsync<T>(Expression<Func<HzyTuple<T>, bool>> Where)
         {
             var _Delete = this.DeleteObject<T>().Where(Where);
-            return (await _Delete.ExecuteAsync()) > 0;
+            return (await _Delete.ExecuteAsync());
         }
 
         /// <summary>
@@ -346,10 +346,10 @@ namespace DbFrame.Core.Achieve
         /// <typeparam name="T"></typeparam>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public override async Task<bool> DeleteByIdAsync<T>(object Id)
+        public override async Task<int> DeleteByIdAsync<T>(object Id)
         {
             var _Delete = this.DeleteByIdObject<T>(Id);
-            return (await _Delete.ExecuteAsync()) > 0;
+            return (await _Delete.ExecuteAsync());
         }
 
         /// <summary>

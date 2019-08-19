@@ -11,6 +11,7 @@ namespace DbFrame.Core.Interface
 
     public interface IUpdate<T>
     {
+        IUpdate<T> Execute(List<SQL> SqlContainer);
         int Execute();
         Task<int> ExecuteAsync();
         IUpdate<T> IgnoreCols(Expression<Func<T, dynamic>> IgnoreColumns);

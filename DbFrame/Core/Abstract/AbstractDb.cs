@@ -44,14 +44,14 @@ namespace DbFrame.Core.Abstract
         #endregion
 
         #region Update
-        public abstract bool Update<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract bool Update<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract bool Update<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract bool UpdateById<T>(T Entity);
-        public abstract Task<bool> UpdateAsync<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract Task<bool> UpdateAsync<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract Task<bool> UpdateAsync<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract Task<bool> UpdateByIdAsync<T>(T Entity);
+        public abstract int Update<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract int Update<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract int Update<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract int UpdateById<T>(T Entity);
+        public abstract Task<int> UpdateAsync<T>(T Entity, Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract Task<int> UpdateAsync<T>(Expression<Func<T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract Task<int> UpdateAsync<T>(Expression<Func<T, T>> Entity, Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract Task<int> UpdateByIdAsync<T>(T Entity);
         public abstract IUpdate<T> UpdateObject<T>(T Entity);
         public abstract IUpdate<T> UpdateObject<T>(Expression<Func<T>> Entity);
         public abstract IUpdate<T> UpdateObject<T>(Expression<Func<T, T>> Entity);
@@ -59,10 +59,10 @@ namespace DbFrame.Core.Abstract
         #endregion
 
         #region Delete
-        public abstract bool Delete<T>(Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract bool DeleteById<T>(object Id);
-        public abstract Task<bool> DeleteAsync<T>(Expression<Func<HzyTuple<T>, bool>> Where);
-        public abstract Task<bool> DeleteByIdAsync<T>(object Id);
+        public abstract int Delete<T>(Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract int DeleteById<T>(object Id);
+        public abstract Task<int> DeleteAsync<T>(Expression<Func<HzyTuple<T>, bool>> Where);
+        public abstract Task<int> DeleteByIdAsync<T>(object Id);
         public abstract IDelete<T> DeleteObject<T>();
         public abstract IDelete<T> DeleteByIdObject<T>(object Id);
         #endregion 

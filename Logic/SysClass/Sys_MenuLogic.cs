@@ -74,7 +74,7 @@ namespace Logic.SysClass
                 }
                 else
                 {
-                    if (!db.UpdateById(model)) throw new MessageBox(this.ErrorMessage);
+                    if (db.UpdateById(model) == 0) throw new MessageBox(this.ErrorMessage);
                 }
 
                 if (_Sys_MenuFunctionList.Count > 0)
@@ -154,7 +154,7 @@ namespace Logic.SysClass
             if (_Account.IsSuperManage) return _Sys_MenuAllList;
 
             var _Sys_MenuList = await db
-                .Query<Sys_RoleMenuFunction>(w => w.t1.RoleMenuFunction_RoleID == _Account.RoleID)
+                .Query<Sys_RoleMenuFunction>(w => w.In(w.t1.RoleMenuFunction_RoleID, _Account.RoleIDList))
                 .Join<Sys_Function>(w => w.t1.RoleMenuFunction_FunctionID == w.t2.Function_ID)
                 .Join<Sys_Menu>(w => w.t1.RoleMenuFunction_MenuID == w.t3.Menu_ID)
                 .Where(w => w.t2.Function_Num == "10")

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DbFrame.Core.Achieve
 {
@@ -8,7 +7,6 @@ namespace DbFrame.Core.Achieve
     using DbFrame.Core.Abstract;
     using DbFrame.Core.CodeAnalysis;
     using DbFrame.Core.Interface;
-    using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
@@ -19,6 +17,13 @@ namespace DbFrame.Core.Achieve
             : base(_Set, _Ado, _Analysis)
         {
 
+        }
+
+        public override IUpdate<T> Execute(List<SQL> SqlContainer)
+        {
+            this.ToSql();
+            SqlContainer.Add(this.Sql);
+            return this;
         }
 
         public override int Execute()

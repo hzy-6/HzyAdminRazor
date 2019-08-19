@@ -2,12 +2,50 @@
 
     <div class="row">
         <!--表单控件-->
-        @(UI.Input<Sys_User>(item => item.User_Name, 12))
-        @(UI.Input<Sys_User>(item => item.User_LoginName, 12))
-        @(UI.Input<Sys_User>(item => item.User_Pwd, 12, new { type = "password" }))
-        @(UI.Input<Sys_User>(item => item.User_Email, 12))
+        @(UI.Input<Sys_User>(item => item.User_Name, 6))
+        @(UI.Input<Sys_User>(item => item.User_LoginName, 6))
+        @(UI.Input<Sys_User>(item => item.User_Pwd, 6, new { type = "password" }))
+        @(UI.Input<Sys_User>(item => item.User_Email, 6))
 
-        @(UI.FindBack<Sys_Role, Sys_Role>(w => w.Role_Name, w => w.Role_ID, Url.Action("Index", "Role", new { findback = "1" }), "app.findBack(row,'Role')", "app.findBack(null,'Role');", 12))
+        <div class='col-sm-12'>
+            <h4 class='example-title'>角色</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>角色</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item,index in Sys_UserRoleList" v-bind:index="index">
+                        <td>{{index+1}}</td>
+                        <td>
+                            <!--查找带回start-->
+                            <div class="input-group">
+                                <input type="text" placeholder="请选择 角色" readonly="readonly" class="form-control" v-model="item.Role_Name">
+                                <input type="text" class="form-control hidden-xs-up" v-model="item.UserRole_RoleID">
+                                <span class="input-group-btn">
+                                    <button type="button" @@click="findBackOpen('/Admin/Role?findback=1','请选择 角色','Role',index)" class="btn btn-outline btn-default"><i class="fa fa-search"></i></button>
+                                    <button type="button" @@click="findBack(null,'Role',index)" class="btn btn-outline btn-default"><i class="fas fa-times"></i></button>
+                                </span>
+                            </div>
+                            <!--查找带回end-->
+                        </td>
+                        <td class="text-center"><button class="btn btn-danger btn-sm" @@click="removeRow(index)">移除</button></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="100" class="text-center"><button class="btn btn-primary btn-sm" @@click="addRow">添加</button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+
+
+
     </div>
     <!--按钮组start-->
     <div class="formToolbar">
@@ -41,8 +79,8 @@
             el: "#app",
             data: {
                 formKey: '@ViewBag.FormKey',//表单主键
-                adminFormObject: {},
-                @(UI.CreateViewModel(new Sys_User(), new Sys_Role()))
+                adminFormObject: {},@(UI.CreateViewModel(new Sys_User(), new Sys_Role()))
+                Sys_UserRoleList:[]
             },
             watch: {
                 formKey: function (newV, oldV) {
@@ -74,12 +112,39 @@
                     });
                 },
                 //查找带回
-                findBack: function (row, tag) {
+                findBack: function (row, tag, index) {
                     if (row != null && row.length > 0) row = row[0];
                     if (tag == "Role") {
-                        this.Role_ID = (row ? row._ukid : "");
-                        this.Role_Name = (row ? row.Role_Name : "");
+                        //验证 是否 选择 重复的 角色
+                        if (row) {
+                            for (var i = 0; i < this.Sys_UserRoleList.length; i++) {
+                                var item = this.Sys_UserRoleList[i];
+                                if (item.UserRole_RoleID == row._ukid) return admin.msg('请不要选择重复的角色,该角色您已经拥有!');
+                            }
+                        }
+
+                        //
+                        this.Sys_UserRoleList[index].UserRole_RoleID = (row ? row._ukid : null);
+                        this.Sys_UserRoleList[index].Role_Name = (row ? row.Role_Name : null);
                     }
+                },
+                //查找带回打开窗口 扩展函数
+                findBackOpen: function (url, placeholder, type, index) {
+                    admin.findBack.open(url, placeholder, function (row) {
+                        app.findBack(row, type, index);
+                    });
+                },
+                //增行
+                addRow: function () {
+                    this.Sys_UserRoleList.push({
+                        UserRole_ID: null,
+                        UserRole_UserID: app.formKey,
+                        UserRole_RoleID: null,
+                        Role_Name:null,
+                    });
+                },
+                removeRow: function (index) {
+                    this.Sys_UserRoleList.splice(index, 1);
                 },
             }
         });

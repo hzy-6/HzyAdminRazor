@@ -278,6 +278,7 @@ a {
                 display: block;
                 float: left;
                 position: relative;
+                font-weight: bold;
             }
 
                 .hzy-container .hzy-main-right nav ul li span {
@@ -306,7 +307,6 @@ a {
 
                 .hzy-container .hzy-main-right nav ul li.selected {
                     background: #f3f6f8;
-                    font-weight: 500;
                     border-bottom: 1px solid #f3f6f8;
                     color: #333;
                 }
