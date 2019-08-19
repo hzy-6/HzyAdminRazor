@@ -22,7 +22,7 @@ namespace HzyAdmin.Areas.Admin.Controllers
         }
         public AccountLogic _Logic = new AccountLogic();
 
-        [HttpGet, Route(""), Route("/Admin"), Route("/Admin/Login/")]
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

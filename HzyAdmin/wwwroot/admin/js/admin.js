@@ -350,7 +350,7 @@ window.admin = {
     },
     getCookie: function (name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr = document.cookie.match(reg))
+        if (arr = top.document.cookie.match(reg))
             return unescape(arr[2]);
         else
             return null;
@@ -360,7 +360,7 @@ window.admin = {
         exp.setTime(exp.getTime() - 1);
         var cval = getCookie(name);
         if (cval != null)
-            document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+            top.document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
     },
     //这是有设定过期时间的使用示例：
     //s20是代表20秒
@@ -371,7 +371,7 @@ window.admin = {
         var strsec = admin.getsec(time);
         var exp = new Date();
         exp.setTime(exp.getTime() + strsec * 1);
-        document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+        top.document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
     },
     getsec: function (str) {
         var str1 = str.substring(1, str.length) * 1;

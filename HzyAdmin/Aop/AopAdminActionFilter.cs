@@ -115,11 +115,16 @@ namespace Aop
                         {
                             _func_list.ForEach(item =>
                             {
-                                var ispower = _role_menu_func_list.Any(w =>
-                                w.RoleMenuFunction_RoleID == _Controller._Account.RoleID &&
-                                w.RoleMenuFunction_MenuID == _Menu.Menu_ID &&
-                                w.RoleMenuFunction_FunctionID == item.Function_ID);
-                                _power_list.Add(item.Function_ByName, ispower);
+                                if (_Controller._Account.RoleIDList != null)
+                                {
+                                    var ispower = _role_menu_func_list.Any(w =>
+                                    _Controller._Account.RoleIDList.Contains(w.RoleMenuFunction_RoleID.ToGuid()) &&
+                                    w.RoleMenuFunction_MenuID == _Menu.Menu_ID &&
+                                    w.RoleMenuFunction_FunctionID == item.Function_ID);
+                                    _power_list.Add(item.Function_ByName, ispower);
+                                }
+                                else
+                                    _power_list.Add(item.Function_ByName, false);
                             });
                         }
                     }
