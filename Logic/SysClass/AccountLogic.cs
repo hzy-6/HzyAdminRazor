@@ -21,7 +21,7 @@ namespace Logic.SysClass
         /// <param name="uName"></param>
         /// <param name="uPwd"></param>
         /// <param name="loginCode"></param>
-        public async Task<Account> CheckedAsync(string uName, string uPwd, string loginCode)
+        public async Task<string> CheckedAsync(string uName, string uPwd, string loginCode)
         {
             if (string.IsNullOrEmpty(uName))
                 throw new MessageBox("请输入用户名");
@@ -42,6 +42,18 @@ namespace Logic.SysClass
             //if (!code.ToLower().Equals(loginCode.ToLower()))
             //    throw new MessageBox("验证码不正确");
 
+            //var _TokenType = "Bearer ";
+
+            return new JwtTokenUtil().GetToken(_Sys_User.User_ID.ToStr());
+        }
+
+        /// <summary>
+        /// 根据用户信息获取 Account 对象
+        /// </summary>
+        /// <param name="_Sys_User"></param>
+        /// <returns></returns>
+        public async Task<Account> GetAccountByUser(Sys_User _Sys_User)
+        {
             var _Account = new Account();
             var _Sys_UserRole = await db.FindAsync<Sys_UserRole>(w => w.t1.UserRole_UserID == _Sys_User.User_ID);
             var _Sys_Role = await db.FindByIdAsync<Sys_Role>(_Sys_UserRole.UserRole_RoleID);
@@ -52,8 +64,20 @@ namespace Logic.SysClass
             _Account._Sys_User = _Sys_User;
             //如果是超级管理员 帐户
             _Account.IsSuperManage = _Sys_Role.Role_ID == AppConfig.Admin_RoleID.ToGuid();
-            Tools.SetSession("Account", _Account);
             return _Account;
+        }
+
+        /// <summary>
+        /// 获取 账户信息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Account> Get()
+        {
+            var token = Tools.GetCookie("Authorization");
+
+            var Id = new JwtTokenUtil().ReadJwtToken(token).ToGuid();
+
+            return await this.GetAccountByUser(db.FindById<Sys_User>(Id));
         }
 
         /// <summary>

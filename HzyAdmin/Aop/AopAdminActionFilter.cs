@@ -14,7 +14,7 @@ namespace Aop
     /// <summary>
     /// 检查session 
     /// </summary>
-    public class AdminActionFilter: ActionFilterAttribute
+    public class AopAdminActionFilter : ActionFilterAttribute
     {
         /// <summary>
         /// 忽略特性
@@ -36,11 +36,11 @@ namespace Aop
             if (!Ignore) return;
             var _Controller = context.Controller as HzyAdmin.Areas.Admin.Controllers.AdminBaseController;
 
-            var accountM = Tools.GetSession<Account>("Account");
+            var token = Tools.GetCookie("Authorization");
             //如果没有忽略Session 检查
             if (!_Controller.IgnoreSessionCheck)
             {
-                if (accountM == null || accountM?.UserID.ToGuid() == Guid.Empty)
+                if (string.IsNullOrWhiteSpace(token))
                 {
                     if (Tools.IsAjaxRequest)
                     {
@@ -55,10 +55,13 @@ namespace Aop
                         context.Result = _Controller.Content(Alert, "text/html;charset=utf-8;");
                     }
                 }
-                _Controller._Account = accountM;
+                else
+                {
+                    _Controller._Account = new AccountLogic().Get().Result;
+                }
             }
 
-            AccountLogic.InsertAppLog(context.HttpContext, accountM.UserID);
+            AccountLogic.InsertAppLog(context.HttpContext, _Controller._Account.UserID);
 
             //如果表单key 存在 则自动将 控制器 基类 表单key 属性赋值上
             var _FormKey = _Controller.Request.Query["formKey"].ToStr();

@@ -36,7 +36,7 @@ namespace Logic.Class
 
         public static Account GetAccount()
         {
-            return Tools.GetSession<Account>("Account");
+            return new SysClass.AccountLogic().Get().Result;
         }
 
         /// <summary>

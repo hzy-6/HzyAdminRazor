@@ -46,7 +46,7 @@ namespace HzyAdmin.Controllers.Api
             return this.Json(new
             {
                 status = 1,
-                token = _TokenType + new JwtTokenUtil(this._IConfiguration).GetToken(Guid.NewGuid().ToStr()),
+                token = _TokenType + new JwtTokenUtil().GetToken(Guid.NewGuid().ToStr()),
                 tokenType = _TokenType,
                 jumpurl = AppConfig.HomePageUrl + "#!%u9996%u9875#!/Admin/Home/Main/"
             });

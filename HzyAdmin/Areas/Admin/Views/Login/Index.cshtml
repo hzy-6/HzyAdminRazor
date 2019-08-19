@@ -85,11 +85,12 @@
                 admin.ajax({
                     url: '@Url.Action("Check")',
                     data: this.$data,
-                    loading:true,
+                    loading: true,
                     success: function (r) {
                         if (r.status == 1) {
-                           top.window.location = r.jumpurl;
-                        }                        
+                            admin.setCookie('Authorization', r.token);
+                            top.window.location = r.jumpurl;
+                        }
                     }
                 });
             }

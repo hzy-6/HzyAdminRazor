@@ -38,16 +38,24 @@ namespace HzyAdmin.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Check(string UserName, string UserPassword, string LoginCode)
         {
-            await _Logic.CheckedAsync(UserName, UserPassword, LoginCode);
-
+            var token = await _Logic.CheckedAsync(UserName, UserPassword, LoginCode);
             return this.Success(new
             {
                 status = 1,
-                jumpurl = AppConfig.HomePageUrl + "#!%u9996%u9875#!/Admin/Home/Main/"
+                jumpurl = AppConfig.HomePageUrl + "#!%u9996%u9875#!/Admin/Home/Main/",
+                token = token
             });
         }
 
-
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Out()
+        {
+            Tools.RemoveCookie("Authorization");
+            return RedirectToAction("Index");
+        }
 
 
 

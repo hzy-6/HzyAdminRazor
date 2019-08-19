@@ -18,7 +18,7 @@ namespace HzyAdmin.Areas.Admin.Controllers
     using System.Data;
 
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Aop.AdminActionFilter]
+    [Aop.AopAdminActionFilter]
     [Area(nameof(ApiVersionsEnum.Admin))]
     public class AdminBaseController : Controller
     {
@@ -30,7 +30,7 @@ namespace HzyAdmin.Areas.Admin.Controllers
         /// <summary>
         /// 当前用户信息
         /// </summary>
-        public Account _Account { get; set; }
+        public Account _Account { get; set; } = new Account();
 
         /// <summary>
         /// 是否忽略Session检查

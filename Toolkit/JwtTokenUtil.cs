@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace Toolkit
 {
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
+    using System.Linq;
 
     /// <summary>
     /// JWT是由 . 分割的三部分组成：
@@ -17,12 +18,12 @@ namespace Toolkit
     /// </summary>
     public class JwtTokenUtil
     {
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
 
-        public JwtTokenUtil(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        //public JwtTokenUtil(IConfiguration configuration)
+        //{
+        //    _configuration = configuration;
+        //}
 
         public string GetToken(string Key)
         {
@@ -58,5 +59,20 @@ namespace Toolkit
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public string ReadJwtToken(string token)
+        {
+            var _JwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+            var _ReadJwtToken = _JwtSecurityTokenHandler.ReadJwtToken(token);
+            var key = string.Empty;
+            if (_ReadJwtToken.Claims?.Count() > 0)
+            {
+                key = _ReadJwtToken.Claims.FirstOrDefault().Value;
+            }
+            return key;
+        }
+
+
+
     }
 }
