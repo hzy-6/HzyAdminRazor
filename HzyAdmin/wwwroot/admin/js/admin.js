@@ -371,7 +371,7 @@ window.admin = {
         var strsec = admin.getsec(time);
         var exp = new Date();
         exp.setTime(exp.getTime() + strsec * 1);
-        top.document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + (path ? (";path=" + path) : '/');
+        top.document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + (path ? (";path=" + path) : ";path=/");
 
     },
     getsec: function (str) {
