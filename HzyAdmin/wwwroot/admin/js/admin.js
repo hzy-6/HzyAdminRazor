@@ -366,12 +366,13 @@ window.admin = {
     //s20是代表20秒
     //h是指小时，如12小时则是：h12
     //d是天数，30天则：d30
-    setCookie: function (name, value, time) {
+    setCookie: function (name, value, time, path) {
         if (!time) time = 'h12';
         var strsec = admin.getsec(time);
         var exp = new Date();
         exp.setTime(exp.getTime() + strsec * 1);
-        top.document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+        top.document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + (path ? (";path=" + path) : '/');
+
     },
     getsec: function (str) {
         var str1 = str.substring(1, str.length) * 1;
