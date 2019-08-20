@@ -59,7 +59,7 @@ namespace HzyAdmin.Areas.Admin.Controllers.Sys
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Save(IFormCollection fc)
+        public IActionResult Save(IFormCollection fc)
         {
             var Type = fc["ClassType"];
             var Url = (fc["Url"].ToStr() == null ? _WebRootPath + "\\Content\\CreateFile\\" : fc["Url"].ToStr());
@@ -68,7 +68,7 @@ namespace HzyAdmin.Areas.Admin.Controllers.Sys
             var isall = fc["isall"].ToBool();
             var Template = _WebRootPath + "\\Content\\Template\\";
 
-            await _Logic.Save(Type, Url, Template, Str, isall, Table);
+            _Logic.Save(Type, Url, Template, Str, isall, Table).ConfigureAwait(false);
             return this.Success();
         }
 
