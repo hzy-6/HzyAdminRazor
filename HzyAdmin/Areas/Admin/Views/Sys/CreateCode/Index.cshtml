@@ -170,6 +170,7 @@
                     admin.ajax({
                         url: "@Url.Action("Save")",
                         data: this._data,
+                        loading: true,
                         success: function (r) {
                             if (r.status == 1) {
                                 admin.msg("创建成功!", "成功");
