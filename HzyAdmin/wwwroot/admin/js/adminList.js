@@ -232,7 +232,6 @@ window.adminList = (function () {
             resetSearch: function () {
                 domButton.panelSearch().find("form")[0].reset();
                 adminListClass.tableObject.bootstrapTable('selectPage', 1);
-                adminListClass.refresh();
             },
             //刷新
             refresh: function (data) {
