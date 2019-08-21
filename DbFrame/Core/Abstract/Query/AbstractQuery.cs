@@ -20,7 +20,11 @@ namespace DbFrame.Core.Abstract.Query
 
         public abstract IQuery<T> OrderBy<TReturn>(Expression<Func<HzyTuple<T>, TReturn>> OrderBy);
 
+        public abstract IQuery<T> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T>, TReturn>> OrderBy);
+
         public abstract IQuery<T> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T>, TReturn>> OrderBy);
+
+        public abstract IQuery<T> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T>, TReturn>> OrderBy);
 
         public abstract IQuery<T> GroupBy<TReturn>(Expression<Func<HzyTuple<T>, TReturn>> GroupBy);
 

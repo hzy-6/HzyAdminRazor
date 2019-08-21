@@ -9,14 +9,14 @@
 
 
 using System;
-namespace DbFrame.DbContext.SqlServer.Achieve
+namespace DbFrame.Core.Achieve.Query1
 {
     using DbFrame.BaseClass;
     using DbFrame.Core.Abstract;
     using DbFrame.Core.Abstract.Query;
+    using DbFrame.Core.Achieve.Query;
     using DbFrame.Core.CodeAnalysis;
     using DbFrame.Core.Interface.Query;
-    using DbFrame.DbContext.SqlServer.Achieve.Query;
     using System.Linq.Expressions;
 
 <#
@@ -44,8 +44,7 @@ namespace DbFrame.DbContext.SqlServer.Achieve
 
         public override IJoin<<#=NewStr#>> Having(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where)
         {
-		throw new NotImplementedException();
-            
+			this.analysis.CreateHaving(Where, this.SqlCode); return this;            
         }
 
      <#if(i<16){#>   
@@ -62,9 +61,21 @@ namespace DbFrame.DbContext.SqlServer.Achieve
             return this;
         }
 
+		public override IJoin<<#=NewStr#>> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy)
+        {
+			if(IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<<#=NewStr#>> OrderByDesc<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+		public override IJoin<<#=NewStr#>> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy)
+        {
+            if(IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 

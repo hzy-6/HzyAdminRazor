@@ -83,9 +83,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IQuery<T> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IQuery<T> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IQuery<T> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 

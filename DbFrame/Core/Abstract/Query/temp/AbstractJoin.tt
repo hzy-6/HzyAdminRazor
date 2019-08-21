@@ -40,13 +40,17 @@ namespace DbFrame.Core.Abstract.Query1
 
 		public abstract IJoin<<#=NewStr#>> Where(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
 
-		public abstract IJoin<<#=NewStr#>> WhereIF(bool IsWhere, Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
+		public abstract IJoin<<#=NewStr#>> WhereIF(bool IF, Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
 
 		public abstract IJoin<<#=NewStr#>> OrderBy<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
 
+		public abstract IJoin<<#=NewStr#>> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
 		public abstract IJoin<<#=NewStr#>> OrderByDesc<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
 
-		public abstract  IJoin<<#=NewStr#>> Having(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
+		public abstract IJoin<<#=NewStr#>> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
+		public abstract IJoin<<#=NewStr#>> Having(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
 
 		public abstract IJoin<<#=NewStr#>> GroupBy<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> GroupBy);
 

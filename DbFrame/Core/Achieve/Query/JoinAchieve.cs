@@ -8,7 +8,6 @@ namespace DbFrame.Core.Achieve.Query
     using DbFrame.Core.Abstract.Query;
     using DbFrame.Core.CodeAnalysis;
     using DbFrame.Core.Interface.Query;
-    using DbFrame.Core.Achieve.Query;
     using System.Linq.Expressions;
 
 
@@ -30,7 +29,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2> Having(Expression<Func<HzyTuple<T1, T2>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -46,9 +44,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -103,7 +113,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3> Having(Expression<Func<HzyTuple<T1, T2, T3>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -119,9 +128,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -176,7 +197,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4> Having(Expression<Func<HzyTuple<T1, T2, T3, T4>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -192,9 +212,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -264,9 +296,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -336,9 +380,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -408,9 +464,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -465,7 +533,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -481,9 +548,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -538,7 +617,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -554,9 +632,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -611,7 +701,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -627,9 +716,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -684,7 +785,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -700,9 +800,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -757,7 +869,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -773,9 +884,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -830,7 +953,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -846,9 +968,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -903,7 +1037,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -919,9 +1052,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -976,7 +1121,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -992,9 +1136,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 
@@ -1049,7 +1205,6 @@ namespace DbFrame.Core.Achieve.Query
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> Having(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, bool>> Where)
         {
             this.analysis.CreateHaving(Where, this.SqlCode); return this;
-
         }
 
 
@@ -1059,9 +1214,21 @@ namespace DbFrame.Core.Achieve.Query
             return this;
         }
 
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> OrderByIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderBy(OrderBy);
+            return this;
+        }
+
         public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> OrderByDesc<TReturn>(Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, TReturn>> OrderBy)
         {
             this.analysis.CreateOrderByDESC(OrderBy, this.SqlCode);
+            return this;
+        }
+
+        public override IJoin<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> OrderByDescIF<TReturn>(bool IF, Expression<Func<HzyTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, TReturn>> OrderBy)
+        {
+            if (IF) return this.OrderByDesc(OrderBy);
             return this;
         }
 

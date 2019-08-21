@@ -31,19 +31,47 @@ namespace DbFrame.Core.Interface.Query1
 
 			IMappingData<TReturn> Select<TReturn>(string Select="*");
 
+			<# if(i==1) { #>
+
+			IQuery<<#=NewStr#>> Where(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
+
+			IQuery<<#=NewStr#>> WhereIF(bool IF, Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
+
+			IQuery<<#=NewStr#>> OrderBy<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
+			IQuery<<#=NewStr#>> OrderByIF<TReturn>(bool IF,Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
+			IQuery<<#=NewStr#>> OrderByDesc<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
+			IQuery<<#=NewStr#>> OrderByDescIF<TReturn>(bool IF,Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
+			IQuery<<#=NewStr#>> Having(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
+
+			IQuery<<#=NewStr#>> GroupBy<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> GroupBy);
+
+			IQuery<<#=NewStr#>> SqlString(Action<SQL> _Action);
+
+			<# }else{ #>
+
 			IJoin<<#=NewStr#>> Where(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
 
-			IJoin<<#=NewStr#>> WhereIF(bool IsWhere, Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
+			IJoin<<#=NewStr#>> WhereIF(bool IF, Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
 
 			IJoin<<#=NewStr#>> OrderBy<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
 
+			IJoin<<#=NewStr#>> OrderByIF<TReturn>(bool IF,Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
 			IJoin<<#=NewStr#>> OrderByDesc<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
+
+			IJoin<<#=NewStr#>> OrderByDescIF<TReturn>(bool IF,Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> OrderBy);
 
 			IJoin<<#=NewStr#>> Having(Expression<Func<HzyTuple<<#=NewStr#>>, bool>> Where);
 
 			IJoin<<#=NewStr#>> GroupBy<TReturn>(Expression<Func<HzyTuple<<#=NewStr#>>, TReturn>> GroupBy);
 
 			IJoin<<#=NewStr#>> SqlString(Action<SQL> _Action);
+
+			<# } #>
 
     }
 	<#} #>
