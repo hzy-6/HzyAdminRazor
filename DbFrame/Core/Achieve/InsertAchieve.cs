@@ -183,7 +183,7 @@ namespace DbFrame.Core.Achieve
 
                 return Value;
             }
-            return null;
+            return Value;
         }
 
     }
