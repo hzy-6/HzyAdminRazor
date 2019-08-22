@@ -443,7 +443,8 @@ namespace DbFrame
             if (!_Sign) _Sign = (_KeyValue is string & string.IsNullOrWhiteSpace(_KeyValue.ToString()));
             if (_KeyProperty.PropertyType == typeof(Guid) & _Sign) _KeyValue = Guid.Empty;
             if (_KeyProperty.PropertyType == typeof(int) & _Sign) _KeyValue = Int32.MinValue;
-
+            if (_KeyProperty.PropertyType == typeof(Guid) & !_Sign) _KeyValue = Guid.Parse(_KeyValue.ToString());
+            if (_KeyProperty.PropertyType == typeof(int) & !_Sign) _KeyValue = Int32.Parse(_KeyValue.ToString());
             try
             {
                 var _Where_Body = Expression.Equal(_NewLeft, Expression.Constant(_KeyValue, _KeyProperty.PropertyType));
