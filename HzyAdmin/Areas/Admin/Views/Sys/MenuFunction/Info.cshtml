@@ -112,7 +112,7 @@
             //保存
             save: function () {
                 var loadUrl = "@Url.Action("Save")";
-
+                this.Sys_MenuFunctionList = [];
                 for (var i = 0; i < this.Sys_FunctionList.length; i++) {
                     var item = this.Sys_FunctionList[i];
                     if (item.State) {
