@@ -172,7 +172,7 @@ namespace Logic.SysClass
                     var _Menu = _Sys_MenuAllList.Find(w => w.Menu_ID == item.Menu_ParentID);
                     if (_Menu != null) _New_Sys_MenuList.Add(_Menu);
                 }
-                _New_Sys_MenuList.Add(item);
+                if (!_New_Sys_MenuList.Any(w => w.Menu_ID == item.Menu_ID)) _New_Sys_MenuList.Add(item);
             }
 
             return _New_Sys_MenuList.OrderBy(w => w.Menu_Num).ToList();
