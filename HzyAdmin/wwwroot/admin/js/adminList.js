@@ -148,7 +148,7 @@ window.adminList = (function () {
                         }
                     }
 
-                    if (tableParameter.hasOwnProperty('queryParams')) params = tableParameter.queryParams(params);
+                    if (tableParameter.queryParams) params = tableParameter.queryParams(params);
                     //console.log(params);
                     return params;
                 };
