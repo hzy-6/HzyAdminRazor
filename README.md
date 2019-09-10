@@ -3,6 +3,10 @@
 #### 介绍
 基于.Net Core 2.2 开发的 通用后台管理系统！通配权限。
 
+ **文档、演示：http://hzyadmin.milaizhijie.com** 
+
+ **预览一下 HzyAdminUI Vue 版本：http://hzyadmin.milaizhijie.com/index.html** 
+
 #### 软件架构
 开发环境：vs2017+ 、 NetCore 2.2.301
 
@@ -11,8 +15,6 @@
 前端：BootStrap 4、Layer、Jquery、Vue
 
 后端：NetCore 2.2.301 一定要安装等于或者大于该版本的SDK
-
-文档、演示：http://hzyadmin.milaizhijie.com
 
 数据库脚本位置：HzyAdmin/wwwroot/AppDb/appdb.sql
 
